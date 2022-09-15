@@ -21,7 +21,12 @@ remainingBakeTime(10)
 //
 // It must return how many minutes it will take to prepare your cake, based on
 // each layer taking 3 minutes to prepare
-
+const timeForOneLayer = 3
+function calculatePreparationTime(layers) {
+  const totalTime1 = timeForOneLayer * layers
+  return totalTime1
+}
+calculatePreparationTime(3)
 // 4. Create a function named totalTimeSpent that accepts two parameters:
 // - the number of layers your cake has
 // - the number of minutes the cake has already been baking in the oven
@@ -29,6 +34,12 @@ remainingBakeTime(10)
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
 // Use your calculatePreparationTime function in the calculation.
 
+function totalTimeSpent(layers, minutesInOven) {
+  const PreperationtotalTime = timeForOneLayer * layers
+  const totalTime = PreperationtotalTime + minutesInOven
+  return totalTime
+}
+totalTimeSpent(2, 15)
 // Don't change the code below this line
 module.exports = {
   /* eslint-disable no-undef */
