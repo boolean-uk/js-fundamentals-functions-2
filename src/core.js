@@ -21,9 +21,9 @@ function remainingBakeTime(num) {
 // It must return how many minutes it will take to prepare your cake, based on
 // each layer taking 3 minutes to prepare
 function calculatePreparationTime(num) {
- layers = num * 3
+  const layers = num * 3
 
- return layers
+  return layers
 }
 
 // 4. Create a function named totalTimeSpent that accepts two parameters:
@@ -33,7 +33,7 @@ function calculatePreparationTime(num) {
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
 // Use your calculatePreparationTime function in the calculation.
 function totalTimeSpent(num1, num2) {
-  timespent = num1 * 3 + num2
+  const timespent = num1 * 3 + num2
 
   return timespent
 }
