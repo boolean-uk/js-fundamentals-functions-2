@@ -1,10 +1,19 @@
 // 1. Create a function named bakingTime that returns 50
-
+function bakingTime() {
+  return 50
+}
+bakingTime()
+let time = bakingTime() // set the time variable as the value of the contents of the bakingTime value
 // 2. Create a function named remainingBakeTime that accepts one parameter:
 // - the number of minutes your cake has been in the oven.
 //
 // It must return how many minutes your cake has left based on your parameter
 // and the result of the bakingTime function
+function remainingBakeTime(num) {
+  time = bakingTime() // set time to the value of the contents of bakingTime function, which is always 50, 'resets' the value
+  time = time - num // time minus the value input as an argument in remainingBakeTime
+  return time
+}
 
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
 // - the number of layers your cake has

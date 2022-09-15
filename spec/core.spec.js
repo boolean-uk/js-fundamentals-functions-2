@@ -5,13 +5,13 @@ const {
     totalTimeSpent
 } = require('../src/core.js')
 
-describe("bakingTime", () => {
+fdescribe("bakingTime", () => {
     it("should return 50", () => {
         expect(bakingTime()).toEqual(50)
     })
 })
 
-describe("remainingBakeTime", () => {
+fdescribe("remainingBakeTime", () => {
     it("should calculate the remaining bake time", () => {
         expect(remainingBakeTime(20)).toEqual(30)
         expect(remainingBakeTime(10)).toEqual(40)
