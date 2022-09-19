@@ -9,10 +9,10 @@ function bakingTime() {
 // It must return how many minutes your cake has left based on your parameter
 // and the result of the bakingTime function
 
-let remainingTime = ''
+
 function remainingBakeTime(timeIn) {
-  remainingTime = bakingTime() - timeIn
-  return remainingTime
+  return bakingTime() - timeIn
+  
 }
 remainingBakeTime(10)
 
@@ -21,9 +21,9 @@ remainingBakeTime(10)
 //
 // It must return how many minutes it will take to prepare your cake, based on
 // each layer taking 3 minutes to prepare
-const timeForOneLayer = 3
+
 function calculatePreparationTime(layers) {
-  const totalTime1 = timeForOneLayer * layers
+  const totalTime1 = 3 * layers
   return totalTime1
 }
 calculatePreparationTime(3)
@@ -35,9 +35,8 @@ calculatePreparationTime(3)
 // Use your calculatePreparationTime function in the calculation.
 
 function totalTimeSpent(layers, minutesInOven) {
-  const PreperationtotalTime = timeForOneLayer * layers
-  const totalTime = PreperationtotalTime + minutesInOven
-  return totalTime
+  const PreperationtotalTime = 3 * layers
+  return PreperationtotalTime + minutesInOven
 }
 totalTimeSpent(2, 15)
 // Don't change the code below this line
