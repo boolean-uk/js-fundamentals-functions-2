@@ -1,5 +1,5 @@
 // 1. Create a function named bakingTime that returns 50
-function bakingTime (n) {
+function bakingTime() {
   return 50
 }
 //console.log(bakingTime())
