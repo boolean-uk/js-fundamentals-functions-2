@@ -25,6 +25,21 @@ function timerStatus(remainingMinsOnTimer) {
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
 
+function estimatePrepTime(ingredients, prepTime) {
+  let totalPrepTime = 0
+  const totalIngredients = ingredients.length
+
+  if (typeof prepTime === 'undefined') {
+    totalPrepTime = totalIngredients * 2
+    return totalPrepTime
+  } else {
+    totalPrepTime = totalIngredients * prepTime
+    return totalPrepTime
+  }
+}
+// const ingredientsList = ['sugar', 'milk', 'flour', 'eggs']
+// console.log('THE ESTIMATION IS HERE: ', estimatePrepTime(ingredientsList))
+
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
 // - a list of ingredients
@@ -56,8 +71,8 @@ function timerStatus(remainingMinsOnTimer) {
 
 // Don't change the code below this line
 module.exports = {
-  timerStatus /* eslint-disable-line no-undef */
-  // estimatePrepTime /* eslint-disable-line no-undef */,
+  timerStatus /* eslint-disable-line no-undef */,
+  estimatePrepTime /* eslint-disable-line no-undef */
   // calculateQuantities /* eslint-disable-line no-undef */,
   // improveRecipe /* eslint-disable-line no-undef */
 }
