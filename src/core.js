@@ -23,11 +23,12 @@ function remainingBakeTime(numOfMinsInOven) {
 
 function calculatePreparationTime(cakeLayers) {
   let preparationTime = 0
-  for (i = 0; i <= cakeLayers; i++) {
+  for (let i = 1; i <= cakeLayers; i++) {
     preparationTime += 3
   }
+  return preparationTime
 }
-
+console.log(calculatePreparationTime(2))
 // 4. Create a function named totalTimeSpent that accepts two parameters:
 // - the number of layers your cake has
 // - the number of minutes the cake has already been baking in the oven
@@ -35,10 +36,17 @@ function calculatePreparationTime(cakeLayers) {
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
 // Use your calculatePreparationTime function in the calculation.
 
+function totalTimeSpent(cakeLayers, bakingTime) {
+  const total = calculatePreparationTime(cakeLayers) + bakingTime
+  return total
+}
+
+console.log('THE GRAND TOTAL IS: ', totalTimeSpent(2, 50))
+
 /// Don't change the code below this line
 module.exports = {
   bakingTime /* eslint-disable-line no-undef */,
   remainingBakeTime /* eslint-disable-line no-undef */,
-  calculatePreparationTime /* eslint-disable-line no-undef */
-  // totalTimeSpent /* eslint-disable-line no-undef */
+  calculatePreparationTime /* eslint-disable-line no-undef */,
+  totalTimeSpent /* eslint-disable-line no-undef */
 }
