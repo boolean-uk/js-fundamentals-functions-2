@@ -1,10 +1,19 @@
 // 1. Create a function named bakingTime that returns 50
-
+function bakingTime() {
+  return 50
+}
 // 2. Create a function named remainingBakeTime that accepts one parameter:
 // - the number of minutes your cake has been in the oven.
 //
 // It must return how many minutes your cake has left based on your parameter
 // and the result of the bakingTime function
+
+function remainingBakeTime(numOfMinsInOven) {
+  const result = bakingTime() - numOfMinsInOven
+  // console.log('The baking time is: ', bakingTime())
+  return result
+}
+// console.log('The remaining time is: ', remainingBakeTime(5))
 
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
 // - the number of layers your cake has
@@ -12,6 +21,14 @@
 // It must return how many minutes it will take to prepare your cake, based on
 // each layer taking 3 minutes to prepare
 
+function calculatePreparationTime(cakeLayers) {
+  let preparationTime = 0
+  for (let i = 1; i <= cakeLayers; i++) {
+    preparationTime += 3
+  }
+  return preparationTime
+}
+console.log(calculatePreparationTime(2))
 // 4. Create a function named totalTimeSpent that accepts two parameters:
 // - the number of layers your cake has
 // - the number of minutes the cake has already been baking in the oven
@@ -19,7 +36,14 @@
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
 // Use your calculatePreparationTime function in the calculation.
 
-// Don't change the code below this line
+function totalTimeSpent(cakeLayers, bakingTime) {
+  const total = calculatePreparationTime(cakeLayers) + bakingTime
+  return total
+}
+
+console.log('THE GRAND TOTAL IS: ', totalTimeSpent(2, 50))
+
+/// Don't change the code below this line
 module.exports = {
   bakingTime /* eslint-disable-line no-undef */,
   remainingBakeTime /* eslint-disable-line no-undef */,
