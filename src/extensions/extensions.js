@@ -55,6 +55,23 @@ function estimatePrepTime(ingredients, prepTime) {
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+function calculateQuantities(ingredientsList, cakeLayers) {
+  const quantities = { sugar: 0, eggs: 0 }
+  for (let i = 1; i <= cakeLayers; i++) {
+    for (let i = 0; i < ingredientsList.length; i++) {
+      if (ingredientsList[i] === 'sugar') {
+        quantities.sugar += 100
+      } else if (ingredientsList[i] === 'eggs') {
+        quantities.eggs += 2
+      } else {
+        continue
+      }
+    }
+  }
+  return quantities
+}
+// const ingredientsList = ['sugar', 'milk', 'flour', 'eggs']
+// console.log('THE ESTIMATION IS HERE: ', calculateQuantities(ingredientsList, 2))
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -72,7 +89,7 @@ function estimatePrepTime(ingredients, prepTime) {
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
-  estimatePrepTime /* eslint-disable-line no-undef */
-  // calculateQuantities /* eslint-disable-line no-undef */,
+  estimatePrepTime /* eslint-disable-line no-undef */,
+  calculateQuantities /* eslint-disable-line no-undef */
   // improveRecipe /* eslint-disable-line no-undef */
 }

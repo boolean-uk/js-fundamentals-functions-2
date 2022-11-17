@@ -22,25 +22,25 @@ describe('timerStatus', () => {
 })
 
 describe('estimatePrepTime', () => {
-  fit('should return 5 for 5 ingredients and 1', () => {
+  it('should return 5 for 5 ingredients and 1', () => {
     expect(
       estimatePrepTime(['milk', 'sugar', 'eggs', 'flour', 'chocolate'], 1)
     ).toEqual(5)
   })
 
-  fit('should return 10 for 5 ingredients and 2', () => {
+  it('should return 10 for 5 ingredients and 2', () => {
     expect(
       estimatePrepTime(['milk', 'sugar', 'eggs', 'flour', 'chocolate'], 2)
     ).toEqual(10)
   })
 
-  fit('should return 10 for 5 ingredients and nothing', () => {
+  it('should return 10 for 5 ingredients and nothing', () => {
     expect(
       estimatePrepTime(['milk', 'sugar', 'eggs', 'flour', 'chocolate'])
     ).toEqual(10)
   })
 
-  fit('should return 20 for 2 ingredients and 10', () => {
+  it('should return 20 for 2 ingredients and 10', () => {
     expect(estimatePrepTime(['milk', 'sugar'], 10)).toEqual(20)
   })
 })
