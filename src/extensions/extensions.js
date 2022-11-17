@@ -5,6 +5,18 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
+function timerStatus(timeRemaining){
+  if (timeRemaining === 0){
+    return "Phil's cake is ready!"
+  } else if (timeRemaining >= 0){
+    return 'The cake is still baking!'
+  } else {
+    return "You didn't set a timer!"
+  }
+}
+
+// console.log(timerStatus(0))
+
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,6 +25,21 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
+function estimatePrepTime(ingredients, prepTimePerIngredient){
+  let timeToPrepIngredients = 0
+    if (prepTimePerIngredient === undefined) {
+      timeToPrepIngredients = 2
+    } else {
+        timeToPrepIngredients = prepTimePerIngredient
+    }
+    let finalPrepTime = timeToPrepIngredients * ingredients.length
+    return finalPrepTime
+}
+
+const ingredientsArray = ['cheese', 'milk', 'butter']
+estimatePrepTime(ingredientsArray, 5)
+
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -30,6 +57,41 @@
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
+function calculateQuantities(ingredientsList, numberOfLayers) {
+  console.log(`The cake requires ${ingredientsList} to make`)
+  console.log(`The cake will have ${numberOfLayers} number of layers`)
+
+  const pantry = {
+    sugar: 1000,
+    milk: 500,
+    eggs: 12,
+
+  }
+
+  let doWeHave = true
+
+
+  if (ingredientsList.includes('sugar') && ingredientsList.includes('eggs') === false){
+    doWeHave = false
+  } else if (ingredientsList.includes('sugar') && ingredientsList.includes('eggs')) {
+    console.log('We have sugar and eggs!') 
+    doWeHave = true
+  } else { 
+      doWeHave = false
+    }
+
+  if (doWeHave === true) {
+    return console.log('We can bake a cake!')
+  }
+
+  if (doWeHave === false) {
+    console.log(Object.keys(pantry))
+    return
+  }
+}
+
+console.log((calculateQuantities(['milk'], 3)))
+
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -43,10 +105,20 @@
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
 
+
+// random code here -
+
+// for (let i = 0; i < ingredients.length; i++){
+//   //This cycles round the ingredient sarray
+//   const individualIngredients = ingredients[i]
+//   console.log(`this should list individual in array ${individualIngredients}`);
+// }
+
+
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
   estimatePrepTime /* eslint-disable-line no-undef */,
   calculateQuantities /* eslint-disable-line no-undef */,
-  improveRecipe /* eslint-disable-line no-undef */
+  //improveRecipe /* eslint-disable-line no-undef */
 }
