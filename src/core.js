@@ -4,7 +4,7 @@ function bakingTime() {
   return 50
 }
 
-console.log(bakingTime())
+//console.log(bakingTime())
 
 // 2. Create a function named remainingBakeTime that accepts one parameter:
 // - the number of minutes your cake has been in the oven.
@@ -17,7 +17,7 @@ function remainingBakeTime(minutesInOven) {
   return result
 }
 
-console.log(remainingBakeTime(2))
+//console.log(remainingBakeTime(2))
 
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
 // - the number of layers your cake has
@@ -30,7 +30,7 @@ function calculatePreparationTime(numLayers) {
   return result
 }
 
-console.log(calculatePreparationTime(4))
+//console.log(calculatePreparationTime(4))
 
 // 4. Create a function named totalTimeSpent that accepts two parameters:
 // - the number of layers your cake has
@@ -39,13 +39,13 @@ console.log(calculatePreparationTime(4))
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
 // Use your calculatePreparationTime function in the calculation.
 
-function totalTimeSpent(timeInOven, numLayers) {
-  const layerTime = calculatePreparationTime(numLayers)
-  const result =  timeInOven + layerTime
+function totalTimeSpent(numLayers, timeInOven) {
+  //const layerTime = calculatePreparationTime(numLayers)
+  const result =  calculatePreparationTime(numLayers) + timeInOven
   return result
 }
 
-console.log(totalTimeSpent(2, 4))
+console.log(totalTimeSpent(2, 20)) // expect answ to = (20 + (2*3)) = 26
 
 
 // Don't change the code below this line
