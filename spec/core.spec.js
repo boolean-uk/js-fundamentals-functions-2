@@ -5,7 +5,7 @@ const {
     totalTimeSpent
 } = require('../src/core.js')
 
-describe("bakingTime", () => {
+fdescribe("bakingTime", () => {
     it("should return 50", () => {
         expect(bakingTime()).toEqual(50)
     })
