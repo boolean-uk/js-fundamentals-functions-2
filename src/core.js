@@ -1,10 +1,19 @@
 // 1. Create a function named bakingTime that returns 50
-
+function bakingTime() {
+  return 50
+}
 // 2. Create a function named remainingBakeTime that accepts one parameter:
 // - the number of minutes your cake has been in the oven.
 //
 // It must return how many minutes your cake has left based on your parameter
 // and the result of the bakingTime function
+
+function remainingBakeTime(numOfMinsInOven) {
+  const result = bakingTime() - numOfMinsInOven
+  // console.log('The baking time is: ', bakingTime())
+  return result
+}
+// console.log('The remaining time is: ', remainingBakeTime(5))
 
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
 // - the number of layers your cake has
@@ -19,10 +28,10 @@
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
 // Use your calculatePreparationTime function in the calculation.
 
-// Don't change the code below this line
+/// Don't change the code below this line
 module.exports = {
   bakingTime /* eslint-disable-line no-undef */,
-  remainingBakeTime /* eslint-disable-line no-undef */,
-  calculatePreparationTime /* eslint-disable-line no-undef */,
-  totalTimeSpent /* eslint-disable-line no-undef */
+  remainingBakeTime /* eslint-disable-line no-undef */
+  //calculatePreparationTime /* eslint-disable-line no-undef */,
+  //totalTimeSpent /* eslint-disable-line no-undef */
 }
