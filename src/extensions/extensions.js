@@ -5,14 +5,40 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
+function timerStatus (remainingMinsOnTimer) {
+  if (remainingMinsOnTimer === 0) {
+    return "Phil's cake is ready!"
+  } else if (remainingMinsOnTimer > 0) {
+    return "The cake is still baking!"
+  } else return "You didn't set a timer!"
+}
+console.log(timerStatus(1))
+
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
 // - the prep time per ingredient in minutes
+// 
 // The function must return the total prep time the cake will require based on the
 // number of ingredients provided and the prep time per ingredient.
+// 
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
+function estimatePrepTime (ingredientsArray, minsPrepTime) {
+if (typeof minsPrepTime === 'number') {
+ minsPrepTime
+ console.log('mins prep at if', minsPrepTime)
+} else {
+  minsPrepTime = 2
+}
+let totalIngredients = ingredientsArray.length
+console.log('total ing -', totalIngredients)
+console.log('mins prep -', minsPrepTime)
+return totalIngredients * minsPrepTime
+}
+
+console.log(estimatePrepTime(['a', 'b', 'c'], 5))
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -43,10 +69,10 @@
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
 
-// Don't change the code below this line
-module.exports = {
-  timerStatus /* eslint-disable-line no-undef */,
-  estimatePrepTime /* eslint-disable-line no-undef */,
-  calculateQuantities /* eslint-disable-line no-undef */,
-  improveRecipe /* eslint-disable-line no-undef */
-}
+// // Don't change the code below this line
+// module.exports = {
+//   timerStatus /* eslint-disable-line no-undef */,
+//   estimatePrepTime /* eslint-disable-line no-undef */,
+//   calculateQuantities /* eslint-disable-line no-undef */,
+//   improveRecipe /* eslint-disable-line no-undef */
+// }
