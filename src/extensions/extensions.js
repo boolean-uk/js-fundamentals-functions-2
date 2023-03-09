@@ -11,11 +11,9 @@ function timerStatus(remainingMinsLeft) {
   } else if (remainingMinsLeft === 0) {
     return "Phil's cake is ready!";
   } else {
-    return 'The cake is still baking!'
+    return "The cake is still baking!"
   }
 } 
-
-// console.log(timerStatus(5));
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -33,8 +31,6 @@ const totalPrepTime = numOfIngredients * prepTimePerIngredigents
 return totalPrepTime;
 
 }
-
-// console.log(prepTimePerIngredigents.totalPrepTime)
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
