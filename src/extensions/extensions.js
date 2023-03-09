@@ -4,6 +4,22 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
+function timerStatus(rTimer) {
+  if (rTimer === 0) {
+    const finished = "Phil's cake is ready!"
+    return finished
+  } else if (rTimer > 0) {
+    const rmain = 'The cake is still baking!'
+    return rmain
+  } else if (rTimer === undefined) {
+    const noValue = "You didn't set a timer!"
+    return noValue
+  }
+}
+
+console.log(timerStatus(0))
+console.log(timerStatus(45))
+console.log(timerStatus())
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -13,6 +29,22 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+const array = ['sugar', 'milk', 'flour', 'eggs']
+
+function estimatePrepTime(ingredients, prepT) {
+  const trolley = ingredients.length
+  if (prepT === undefined) {
+    const normalT = 2
+    const total = normalT * trolley
+    return total
+  } else {
+    const total = trolley * prepT
+    return total
+  }
+}
+
+console.log(estimatePrepTime(array, 5))
+// total prep = number of ingridients times(x) 5
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
