@@ -59,7 +59,7 @@ function calculateQuantities(listOfIngredients, numberOfLayoers) {
     updatedList.sugar = 0 * numberOfLayoers 
   }
 
-  if (listOfIngredients.includes('sugar')) {
+  if (listOfIngredients.includes('eggs')) {
     updatedList.eggs = 2 * numberOfLayoers
   } else {
     updatedList.eggs = 0 * numberOfLayoers 
