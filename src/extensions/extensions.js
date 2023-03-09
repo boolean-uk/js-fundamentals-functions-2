@@ -97,8 +97,8 @@ console.log(improveRecipe(foods2, 3))
 
 // Don't change the code below this line
 module.exports = {
-  // timerStatus /* eslint-disable-line no-undef */,
-  // estimatePrepTime /* eslint-disable-line no-undef */,
-  // calculateQuantities /* eslint-disable-line no-undef */,
-  // improveRecipe /* eslint-disable-line no-undef */
+  timerStatus /* eslint-disable-line no-undef */,
+  estimatePrepTime /* eslint-disable-line no-undef */,
+  calculateQuantities /* eslint-disable-line no-undef */,
+  improveRecipe /* eslint-disable-line no-undef */
 }
