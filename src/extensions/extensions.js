@@ -5,6 +5,18 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
+function timerStatus(timeLeft) {
+  if (timeLeft <= 0) {
+    return `Phil's cake is ready!`
+  } else if (timeLeft > 0) {
+    return `The cake is still baking!`
+  } else {
+    return `You didn't set a timer!`
+  }
+}
+console.log(`1. ${timerStatus(-1)}`)
+console.log('--------')
+
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,6 +25,28 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
+const ingredients = ['sugar', 'milk', 'flour', 'eggs', 'cream']
+
+function estimatePrepTime(ingredients, timeToPrep) {
+  let prepTime = 0
+  console.log(`What is timeToPrep set to ${timeToPrep}`)
+  if (timeToPrep) {
+    for (let i = 0; i < ingredients.length; i++) {
+      prepTime += timeToPrep
+    }
+    console.log('Prep time set')
+  } else {
+    for (let i = 0; i < ingredients.length; i++) {
+      prepTime += 2
+    }
+    console.log('Prep time set')
+  }
+  return prepTime
+}
+
+console.log(`2. Prep time will be ${estimatePrepTime(ingredients, 5)} minutes.`)
+console.log('--------')
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -30,6 +64,24 @@
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
+function calculateQuantities(array, layers) {
+  const result = {}
+  if (array.includes('sugar')) {
+    result.sugar = 100 * layers
+  } else {
+    result.sugar = 0
+  }
+  if (array.includes('eggs')) {
+    result.eggs = 2 * layers
+  } else {
+    result.eggs = 0
+  }
+  return result
+}
+
+console.log(calculateQuantities(['sugar', 'milk', 'eggs'], 3))
+console.log('--------')
+
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -42,6 +94,45 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+
+function improveRecipe(object, portions) {
+  const key = Object.getOwnPropertyNames(object)
+  const value = Object.values(object)
+  const imporvedRecipe = {}
+  for (let i = 0; i < key.length; i++) {
+    value[i] = value[i] * portions
+    imporvedRecipe[key[i]] = value[i]
+  }
+  return imporvedRecipe
+}
+
+console.log(`3. Adjusted for wanted amout of portions`)
+console.log(improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3))
+
+// ----- Did some overthinking on Question 2 -----
+
+// const ingredients2 = ['sugar', 'milk', 'flour', 'eggs', 'cream']
+// const prepTimePerIngredient = { sugar: 5, milk: 1, flour: 5, eggs: 2 }
+
+// function estimatePrepTime(ingredients, prepTimePerIngredient) {
+//   const timedIngredients = Object.getOwnPropertyNames(prepTimePerIngredient)
+//   const timedIngredientsValues = Object.values(prepTimePerIngredient)
+//   console.log(timedIngredients)
+//   console.log(timedIngredientsValues)
+//   let timeForPrep = 0
+//   for (let i = 0; i < ingredients.length; i++) {
+//     if (ingredients.includes(timedIngredients[i])) {
+//       timeForPrep += timedIngredientsValues[i]
+//       console.log('Added specific time to timeForPrep')
+//     } else {
+//       timeForPrep = timeForPrep + 2
+//       console.log('Added 2 to timeToPrep')
+//     }
+//   }
+//   return timeForPrep
+// }
+
+// console.log(estimatePrepTime(ingredients2, prepTimePerIngredient))
 
 // Don't change the code below this line
 module.exports = {
