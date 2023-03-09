@@ -9,10 +9,10 @@ function bakingTime() {
 // It must return how many minutes your cake has left based on your parameter
 // and the result of the bakingTime function
 function remainingBakeTime(minutes) {
-  console.log(`This is the bake time`, bakingTime())
-  return minutes
+  const minsCakeLeft = bakingTime() - minutes
+  return minsCakeLeft
 }
-console.log(`This is the remaining bake time`, remainingBakeTime(30))
+console.log(`This is the remaining bake time`, remainingBakeTime(50))
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
 // - the number of layers your cake has
 //
