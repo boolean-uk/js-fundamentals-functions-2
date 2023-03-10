@@ -5,13 +5,14 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
-function timerStatus(timeLeftOnTimer) {
-  if (timeLeftOnTimer === 0) {
-    return "Phil's cake is ready!"
-  } else if (timeLeftOnTimer > 0) {
-    return 'The cake is still baking!'
-  } else {
+function timerStatus(minutesLeft) {
+  if(typeof minutesLeft !== 'number') {
     return "You didn't set a timer!"
+  }
+  if(minutesLeft === 0) {
+    return "Phil's cake is ready!" 
+  } else {
+    return "The cake is still baking!"
   }
 }
 
@@ -24,11 +25,11 @@ function timerStatus(timeLeftOnTimer) {
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
 
-function estimatePrepTime(arrayOfIngredients, prepTime) {
-  if (prepTime === undefined) {
-    prepTime = 0
+function estimatePrepTime(ingredientsArray, prepTime) {
+  if(!prepTime) {
+    prepTime = 2
   }
-  return arrayOfIngredients.lenght * prepTime
+  return ingredientsArray.length * prepTime
 }
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
@@ -47,6 +48,24 @@ function estimatePrepTime(arrayOfIngredients, prepTime) {
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
+function calculateQuantities(ingredientsArray, layers) {
+  const sugarPerLayer = 100
+  const eggsPerLayer = 2
+  const obj = {sugar: 23}
+  if(ingredientsArray.includes('sugar')) {
+    obj.sugar = sugarPerLayer * layers
+  } else {
+    obj.sugar = 0
+  }
+  if(ingredientsArray.includes('eggs')) {
+    obj.eggs = eggsPerLayer * layers
+  } else {
+    obj.eggs = 0
+  }
+  return obj
+}
+console.log(calculateQuantities(['sugar', 'milk'], 2))
+
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -59,6 +78,12 @@ function estimatePrepTime(arrayOfIngredients, prepTime) {
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+
+function improveRecipe(obj, numPortions) {
+  Object.keys(obj).forEach(i => obj[i] = obj[i] * numPortions) // i is = index of items that we are looking at
+  return obj
+}
+console.log(improveRecipe({eggs: 7, milk: 300, sugar: 600, flour: 200}, 3))
 
 // Don't change the code below this line
 module.exports = {
