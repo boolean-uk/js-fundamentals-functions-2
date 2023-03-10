@@ -6,13 +6,13 @@
 // or "You didn't set a timer!" if no value is provided to the parameter
 
 function timerStatus(minutesLeft) {
-  if(typeof minutesLeft !== 'number') {
+  if (typeof minutesLeft !== 'number') {
     return "You didn't set a timer!"
   }
-  if(minutesLeft === 0) {
-    return "Phil's cake is ready!" 
+  if (minutesLeft === 0) {
+    return "Phil's cake is ready!"
   } else {
-    return "The cake is still baking!"
+    return 'The cake is still baking!'
   }
 }
 
@@ -26,7 +26,7 @@ function timerStatus(minutesLeft) {
 // takes 2 minutes to prepare
 
 function estimatePrepTime(ingredientsArray, prepTime) {
-  if(!prepTime) {
+  if (!prepTime) {
     prepTime = 2
   }
   return ingredientsArray.length * prepTime
@@ -48,24 +48,6 @@ function estimatePrepTime(ingredientsArray, prepTime) {
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
-function calculateQuantities(ingredientsArray, layers) {
-  const sugarPerLayer = 100
-  const eggsPerLayer = 2
-  const obj = {sugar: 23}
-  if(ingredientsArray.includes('sugar')) {
-    obj.sugar = sugarPerLayer * layers
-  } else {
-    obj.sugar = 0
-  }
-  if(ingredientsArray.includes('eggs')) {
-    obj.eggs = eggsPerLayer * layers
-  } else {
-    obj.eggs = 0
-  }
-  return obj
-}
-console.log(calculateQuantities(['sugar', 'milk'], 2))
-
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -78,12 +60,6 @@ console.log(calculateQuantities(['sugar', 'milk'], 2))
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
-
-function improveRecipe(obj, numPortions) {
-  Object.keys(obj).forEach(i => obj[i] = obj[i] * numPortions) // i is = index of items that we are looking at
-  return obj
-}
-console.log(improveRecipe({eggs: 7, milk: 300, sugar: 600, flour: 200}, 3))
 
 // Don't change the code below this line
 module.exports = {
