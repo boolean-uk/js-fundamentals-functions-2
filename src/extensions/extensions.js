@@ -61,6 +61,34 @@ console.log(estimatePrepTime(array, 5))
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+const ingridients = ['sugar', 'milk', 'eggs']
+const test2 = ['milk']
+
+function calculateQuantities(list, layers) {
+  const amountOfSugarAndEggs = { sugar: 0, eggs: 0 }
+
+  console.log('a', list.indexOf('sugar'))
+  console.log('b', list.indexOf('milk'))
+  if (list.indexOf('sugar') >= 0) {
+    amountOfSugarAndEggs.sugar = layers * 100
+  }
+  if (list.indexOf('eggs') >= 0) {
+    amountOfSugarAndEggs.eggs = layers * 2
+  }
+  return amountOfSugarAndEggs
+}
+
+console.log(calculateQuantities(ingridients, 3))
+console.log(calculateQuantities(test2, 3))
+
+// sugar = 100 * layers
+// eggs = 2 * layers
+
+// if (list.indexOf("sugar") === undefined)
+// else if (list.indexOf("sugar") !== undefined)
+
+// const amountOfSugarAndEggs = {} --
+// return amountOfSugarAndEggs = e.g.{400g, 2} --
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -74,6 +102,22 @@ console.log(estimatePrepTime(array, 5))
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+const shopping = { eggs: 2, milk: 100, sugar: 250, flour: 160 }
+
+function improveRecipe(object, portions) {
+  const cakeSize = {}
+  const keyAmount = Object.keys(object)
+  for (let i = 0; i < keyAmount.length; i++) {
+    const key = keyAmount[i]
+    const n = object[key]
+    // console.log(key)
+    // console.log(n)
+    cakeSize[key] = n * portions
+  }
+  return cakeSize
+}
+
+console.log(improveRecipe(shopping, 5))
 
 // Don't change the code below this line
 module.exports = {
