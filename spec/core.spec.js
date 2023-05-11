@@ -37,7 +37,7 @@ describe("calculatePreparationTime", () => {
     })
 })
 
-fdescribe("totalTimeSpent", () => {
+describe("totalTimeSpent", () => {
     it("should return 26 for 2 and 20", () => {
         expect(totalTimeSpent(2, 20)).toEqual(26)
     })
