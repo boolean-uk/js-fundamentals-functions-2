@@ -5,7 +5,7 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 function timerStatus(minutes) {
-  if (minutes === null) return "You didn't set a timer!"
+  if (minutes === undefined) return "You didn't set a timer!"
   return minutes === 0 ? "Phil's cake is ready!" : 'The cake is still baking!'
 }
 
