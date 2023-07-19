@@ -72,13 +72,9 @@ const calculateQuantities = (ingredients, layers) => {
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
 
-const improveRecipe = (recipe, portions) => {
-  let ret = {}
-  for (let ingredient in recipe) {
-      ret[ingredient] = recipe[ingredient] * portions
-  }
-
-  return ret
+const improveRecipe = (ingredients, portions) => {
+  Object.keys(ingredients).forEach((key) => ingredients[key] *= portions)
+  return ingredients
 }
 
 // Don't change the code below this line
