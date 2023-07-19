@@ -4,10 +4,10 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
-function timerStatus(minutes){
-  if(minutes == 0) return "Phil's cake is ready!"
-  else if(minutes > 0) return "The cake is still baking!"
-  else if(minutes === undefined) return "You didn't set a timer!"
+function timerStatus(minutes) {
+  if (minutes === 0) return "Phil's cake is ready!"
+  else if (minutes > 0) return 'The cake is still baking!'
+  else if (minutes === undefined) return "You didn't set a timer!"
 }
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -17,8 +17,8 @@ function timerStatus(minutes){
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
-function estimatePrepTime(ingredients, minutes){
-  if(minutes === undefined) minutes = 2
+function estimatePrepTime(ingredients, minutes) {
+  if (minutes === undefined) minutes = 2
   const totalIngredients = ingredients.length
   const totalPrepTime = totalIngredients * minutes
   return totalPrepTime
@@ -38,12 +38,12 @@ function estimatePrepTime(ingredients, minutes){
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
-function calculateQuantities(ingredients, layers){
+function calculateQuantities(ingredients, layers) {
   const sugarPerLayer = 100
   const eggsPerLayer = 2
 
-  const sugar = ingredients.includes("sugar") ? sugarPerLayer * layers : 0
-  const eggs = ingredients.includes("eggs") ? eggsPerLayer * layers : 0
+  const sugar = ingredients.includes('sugar') ? sugarPerLayer * layers : 0
+  const eggs = ingredients.includes('eggs') ? eggsPerLayer * layers : 0
 
   return { sugar, eggs }
 }
@@ -60,13 +60,13 @@ function calculateQuantities(ingredients, layers){
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
 function improveRecipe(recipe, portions) {
-  const improvedRecipe = {};
+  const improvedRecipe = {}
 
   for (const ingredient in recipe) {
-    improvedRecipe[ingredient] = recipe[ingredient] * portions;
+    improvedRecipe[ingredient] = recipe[ingredient] * portions
   }
 
-  return improvedRecipe;
+  return improvedRecipe
 }
 // Don't change the code below this line
 module.exports = {
