@@ -14,7 +14,7 @@ function timerStatus(min) {
 }
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
-// that accepts two parameters:
+// that accepts two parameters :
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
 // - the prep time per ingredient in minutes
 // The function must return the total prep time the cake will require based on the
