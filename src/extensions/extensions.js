@@ -4,6 +4,18 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
+function timerStatus(minutes) {
+  let mes = ''
+  if (minutes === 0) {
+    mes = "Phil's cake is ready!"
+  } else {
+    mes = 'The cake is still baking!'
+  }
+  if (minutes === undefined) {
+    mes = "You didn't set a timer!"
+  }
+  return mes
+}
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -13,6 +25,15 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+function estimatePrepTime(array, timePerIngr) {
+  let time = 0
+  if (timePerIngr === undefined) {
+    time = array.length * 2
+  } else {
+    time = array.length * timePerIngr
+  }
+  return time
+}
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -29,6 +50,16 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+function calculateQuantities(list, layers) {
+  const obj = { sugar: 0, eggs: 0 }
+  if (list.includes('sugar')) {
+    obj.sugar = layers * 100
+  }
+  if (list.includes('eggs')) {
+    obj.eggs = layers * 2
+  }
+  return obj
+}
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -42,6 +73,13 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+function improveRecipe(obj, portions) {
+  const obj2 = {}
+  for (const property in obj) {
+    obj2[property] = obj[property] * portions
+  }
+  return obj2
+}
 
 // Don't change the code below this line
 module.exports = {
