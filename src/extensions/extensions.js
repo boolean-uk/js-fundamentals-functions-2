@@ -4,7 +4,15 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
-
+function timerStatus(remainingMins) {
+  if (remainingMins !== undefined) {
+    return remainingMins === 0
+      ? "Phil's cake is ready!"
+      : 'The cake is still baking!'
+  } else {
+    return "You didn't set a timer!"
+  }
+}
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,7 +21,12 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
-
+function estimatePrepTime(ingredients, prepTime) {
+  if (!prepTime) {
+    prepTime = 2
+  }
+  return ingredients.length * prepTime
+}
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
 // - a list of ingredients
@@ -29,7 +42,16 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
-
+function calculateQuantities(ingredients, numberOfLayers) {
+  const res = {}
+  ingredients.includes('sugar')
+    ? (res.sugar = numberOfLayers * 100)
+    : (res.sugar = 0)
+  ingredients.includes('eggs')
+    ? (res.eggs = numberOfLayers * 2)
+    : (res.eggs = 0)
+  return res
+}
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -42,6 +64,15 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+function improveRecipe(ingredientsObj, portions) {
+  const newObj = {}
+  for (const key in ingredientsObj) {
+    if (Object.hasOwnProperty.call(ingredientsObj, key)) {
+      newObj[key] = ingredientsObj[key] * portions
+    }
+  }
+  return newObj
+}
 
 // Don't change the code below this line
 module.exports = {
