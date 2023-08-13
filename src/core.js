@@ -12,18 +12,26 @@ console.log(input)
 // and the result of the bakingTime function
 
 
-function remainingBakeTime(){
-  const totalBakingTime = bakingTime()
- if (minutesInOven < totalBakingTime){
-  return totalBakingTime - minutesInOven
- }
- else {
-  return 0
- }
+function remainingBakeTime(timeInOven)
+{
+  return bakingTime() - timeInOven
 }
 let minutesInOven = 20
 let remainginTime = remainingBakeTime(minutesInOven)
 console.log(remainginTime)  
+
+// function remainingBakeTime(){
+//   const totalBakingTime = bakingTime()
+//  if (minutesInOven < totalBakingTime){
+//   return totalBakingTime - minutesInOven
+//  }
+//  else {
+//   return 0
+//  }
+// }
+// let minutesInOven = 20
+// let remainginTime = remainingBakeTime(minutesInOven)
+// console.log(remainginTime)  
 
 
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
