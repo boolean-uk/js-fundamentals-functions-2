@@ -4,6 +4,18 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
+const timerStatus = remaining => {
+  if (remaining === 0) {
+    return "Phil's cake is ready!"
+  } else if (remaining > 0) {
+    return "The cake is still baking!"
+  } else {
+    return "You didn't set a timer!"
+  }
+
+}
+
+
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -13,6 +25,21 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
+const estimatePrepTime = (ingredients, preptime) => {
+  let totalIngredients = ingredients.length
+  let preptimeCounter = preptime
+
+  if (preptime === undefined) {
+    preptimeCounter = 2
+  }
+
+  return totalIngredients * preptimeCounter
+}
+
+
+
+
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -30,6 +57,37 @@
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
+
+const calculateQuantities = (ingredients, layers) => {
+  //sugar x 100
+  //eggs x 2
+  let ingObject = {}
+
+  if (ingredients.includes('sugar')) {
+    ingObject.sugar = 100 * layers
+  } else {
+    ingObject.sugar = 0
+  }
+
+  if (ingredients.includes('eggs')) {
+    ingObject.eggs = 2 * layers
+  } else {
+    ingObject.eggs = 0
+  }
+
+  // console.table(ingObject)
+  return ingObject
+}
+
+calculateQuantities(["suggar", "milk", "egg4s"], 2)
+
+
+
+
+
+
+
+
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -42,6 +100,37 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+
+
+const improveRecipe = (obj, portions) => {
+  let newObj = {}
+  for (const [key, value] of Object.entries(obj)) {
+    newObj[key] = value * portions
+  }
+
+  return newObj
+}
+
+improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 2)
+
+// Don't change the code below this line
+module.exports = {
+  /* eslint-disable no-undef */
+  timerStatus,
+  /* eslint-disable no-undef */
+  estimatePrepTime,
+  /* eslint-disable no-undef */
+  calculateQuantities,
+  /* eslint-disable no-undef */
+  improveRecipe
+}
+
+
+
+
+
+
+
 
 // Don't change the code below this line
 module.exports = {
