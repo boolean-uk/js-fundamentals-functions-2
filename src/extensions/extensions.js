@@ -25,13 +25,14 @@ timerStatus()
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
 
-function estimatePrepTime(ingredients, prepTime) {
-  const ing = []
-  if (!prepTime) {
+function estimatePrepTime(ingredientsArray, prepTime) {
+  // const totalTime = ingredientsArray.length * prepTime
+  const ingredientCount = ingredientsArray.length
+  if (typeof prepTime !== 'number') {
     prepTime = 2
   }
-  ing.push(ingredients)
-  return ing.length * prepTime
+  const totalTime = ingredientCount * prepTime
+  return totalTime
 }
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function

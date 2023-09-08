@@ -13,7 +13,8 @@ bakingTime()
 function remainingBakeTime(remainingTime) {
   const timeLeft = bakingTime() - remainingTime
   return timeLeft
-}remainingBakeTime()
+}
+remainingBakeTime()
 
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
 // - the number of layers your cake has
@@ -25,7 +26,8 @@ function calculatePreparationTime(layers) {
   const minutesPerLayer = 3
   const blabla = minutesPerLayer * layers
   return blabla
-} calculatePreparationTime()
+}
+calculatePreparationTime()
 
 // 4. Create a function named totalTimeSpent that accepts two parameters:
 // - the number of layers your cake has
@@ -37,7 +39,8 @@ function calculatePreparationTime(layers) {
 function totalTimeSpent(layers, minutesInTheOven) {
   const amountOfLayers = calculatePreparationTime(layers) + minutesInTheOven
   return amountOfLayers
-} totalTimeSpent()
+}
+totalTimeSpent()
 
 // Don't change the code below this line
 module.exports = {
