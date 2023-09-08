@@ -88,7 +88,7 @@ function improveRecipe(ingredientObject, portionCount) {
   for (const [key, value] of Object.entries(ingredientObject)) {
     outputObject[key] = value * portionCount
   }
-  return outputObject 
+  return outputObject
 }
 
 const ingredientObject = {
