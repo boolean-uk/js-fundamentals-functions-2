@@ -5,6 +5,20 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
+function timerStatus(remainingMin) {
+  if (typeof remainingMin !== 'number') {
+    return "You didn't set a timer!"
+  }
+  if (remainingMin === 0) {
+    return "Phil's cake is ready!"
+  }
+  if (remainingMin > 0) {
+    return 'The cake is still baking!'
+  }
+}
+
+console.log(timerStatus('hahastringgobrrr'))
+
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,6 +27,13 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
+function estimatePrepTime(ing, prepTime) {
+  if (prepTime == null) {
+    return ing.length * 2
+  }
+  return ing.length * prepTime
+}
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -30,6 +51,19 @@
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
+function calculateQuantities(ing, cakeLayers) {
+  let sugarCount = 0
+  let eggsCount = 0
+  for (let i = 0; i < ing.length; i++) {
+    if (ing[i] === 'sugar') {
+      sugarCount += 100 * cakeLayers
+    } else if (ing[i] === 'eggs') {
+      eggsCount += 2 * cakeLayers
+    }
+  }
+  return { sugar: sugarCount, eggs: eggsCount }
+}
+
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -42,6 +76,22 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+
+const testObj = { eggs: 2, milk: 100, sugar: 200 }
+
+function improveRecipe(ing, portions) {
+  const keys = Object.keys(ing)
+  console.log(keys)
+  const ingOut = ing
+  console.log(keys.length)
+  for (let i = 0; i < keys.length; i++) {
+    console.log('for', i)
+    ingOut[keys[i]] *= portions
+  }
+  return ingOut
+}
+
+console.log(improveRecipe(testObj, 3))
 
 // Don't change the code below this line
 module.exports = {
