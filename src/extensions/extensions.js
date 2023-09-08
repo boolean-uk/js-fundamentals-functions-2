@@ -32,12 +32,11 @@ function timerStatus(remainingMinutes) {
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
-
 function estimatePrepTime(ingredients, prepTimePerIngredient) {
   if (prepTimePerIngredient === undefined) {
     prepTimePerIngredient = 2
   }
-  return (ingredients.length-1) * prepTimePerIngredient
+  return (ingredients.length) * prepTimePerIngredient
 }
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
@@ -55,7 +54,20 @@ function estimatePrepTime(ingredients, prepTimePerIngredient) {
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
-function calculateQuantities(ingredients, )
+function calculateQuantities(ingredients, layers) {
+  let obj = {}
+  if (ingredients.includes(`sugar`)=== true) {
+    obj.sugar = 100 * layers
+  } else {
+    obj.sugar = 0
+  }
+  if (ingredients.includes(`eggs`)=== true) {
+    obj.eggs = 2 * layers
+  } else {
+    obj.eggs = 0
+  }
+  return obj
+}
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -69,7 +81,13 @@ function calculateQuantities(ingredients, )
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
-
+function improveRecipe(ingredientsAndQuantities, portions) {
+  const ingredients = Object.keys(ingredientsAndQuantities)
+  for (let i = 0; i < ingredients.length; i++) {
+    ingredientsAndQuantities[ingredients[i]] *= portions
+  }
+  return ingredientsAndQuantities
+}
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
