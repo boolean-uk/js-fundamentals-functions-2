@@ -100,11 +100,11 @@ function improveRecipe(ingredients, portionNumber) {
   // so I'll play around with this to see if it might solve the current issues.
   return newAmounts
 }
-const testingShitOut = improveRecipe(
+const testImproveRecipe = improveRecipe(
   { eggs: 2, milk: 100, sugar: 250, flour: 160 },
   7
 )
-console.log(testingShitOut)
+console.log(testImproveRecipe)
 
 // this function needs to reassign the value of each key contained in the original object
 // Don't change the code below this line
