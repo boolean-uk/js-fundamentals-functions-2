@@ -1,5 +1,16 @@
 // 1. Create a function named bakingTime that returns 50
-
+function bakingTime(){
+  return 50
+}
+function remainingBakeTime(minutes){
+  return bakingTime() - minutes
+}
+function calculatePreparationTime(layer){
+  return layer * 3
+}
+function totalTimeSpent(layer, minutes){
+  return calculatePreparationTime(layer) + minutes
+}
 // 2. Create a function named remainingBakeTime that accepts one parameter:
 // - the number of minutes your cake has been in the oven.
 //
