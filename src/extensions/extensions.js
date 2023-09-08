@@ -5,6 +5,20 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
+function timerStatus(minutesLeft){
+  if(minutesLeft === 0){
+    console.log("Phil's cake is ready")
+  }
+  else if( typeof minutesLeft === 'number' &&  minutesLeft > 0){
+    console.log("The cake is still baking!")
+  }
+  else if( minutesLeft === ''){
+    console.log("You didn't set a timer!")
+  }
+
+}
+
+(timerStatus(''))
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,6 +27,17 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
+function estimatePrepTime(ingredients, ingredientTime){
+  if(typeof ingredientTime === 'number'){
+    return ingredients.length * ingredientTime
+  }
+   else{
+     return ingredients.length * 2 
+  }
+ 
+}
+console.log(estimatePrepTime(["sugar", "milk", "flour", "eggs"], ' '))
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -30,6 +55,26 @@
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
+
+function calculateQuantities(listOfIngredents, layerOfCake){
+const cake = {};
+  for(let i = 0; i < listOfIngredents.length; i++ ){
+    if(listOfIngredents[i] === 'sugar'){
+      cake[listOfIngredents[i]] = 100 * layerOfCake
+     
+    }
+
+     if(listOfIngredents[i] ==='eggs' ){
+      cake[listOfIngredents[i]] = 2 * layerOfCake
+    }
+
+    if(listOfIngredents[i] !== 'sugar' && listOfIngredents[i] !== 'eggs'){
+      cake[listOfIngredents[i]] = 0
+    }
+  }
+return cake;
+}
+console.log((calculateQuantities(['sugar', 'eggs'], 3)))
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -43,10 +88,17 @@
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
 
-// Don't change the code below this line
-module.exports = {
-  timerStatus /* eslint-disable-line no-undef */,
-  estimatePrepTime /* eslint-disable-line no-undef */,
-  calculateQuantities /* eslint-disable-line no-undef */,
-  improveRecipe /* eslint-disable-line no-undef */
+function improveRecipe(ingredientKeys, portionValues){
+  
+  const doubleRecipe = {}
+
+  for (const keys in largeRecipe){
+    doubleRecipe[keys] = largeRecipe[keys] * 2 // The keys could be any words
+  }
+
+  return doubleRecipe
 }
+
+let largeRecipe = { eggs: 13, milk: 50, sugar: 85 }
+console.log(improveRecipe(largeRecipe, 4))
+// Don't change the code below this line
