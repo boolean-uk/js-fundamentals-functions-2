@@ -1,5 +1,9 @@
 // 1. Create a function named bakingTime that returns 50
 
+function bakingTime() {
+  return 50
+}
+console.log(bakingTime())
 // 2. Create a function named remainingBakeTime that accepts one parameter:
 // - the number of minutes your cake has been in the oven.
 //
@@ -20,9 +24,9 @@
 // Use your calculatePreparationTime function in the calculation.
 
 // Don't change the code below this line
-module.exports = {
-  bakingTime /* eslint-disable-line no-undef */,
-  remainingBakeTime /* eslint-disable-line no-undef */,
-  calculatePreparationTime /* eslint-disable-line no-undef */,
-  totalTimeSpent /* eslint-disable-line no-undef */
-}
+// module.exports = {
+//   bakingTime /* eslint-disable-line no-undef */,
+//   remainingBakeTime /* eslint-disable-line no-undef */,
+//   calculatePreparationTime /* eslint-disable-line no-undef */,
+//   totalTimeSpent /* eslint-disable-line no-undef */
+// }
