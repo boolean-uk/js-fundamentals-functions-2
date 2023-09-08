@@ -4,11 +4,17 @@ function bakingTime() {
   return 50
 }
 console.log(bakingTime())
+
 // 2. Create a function named remainingBakeTime that accepts one parameter:
 // - the number of minutes your cake has been in the oven.
 //
 // It must return how many minutes your cake has left based on your parameter
 // and the result of the bakingTime function
+
+function remainingBakeTime(minutesInOven) {
+  return minutesInOven
+}
+console.log(remainingBakeTime(10))
 
 // 3. Create a function named calculatePreparationTime that accepts one parameter:
 // - the number of layers your cake has
