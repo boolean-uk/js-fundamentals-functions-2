@@ -68,7 +68,7 @@ function calculateQuantities(ingredientsArray, cakeLayerCount) {
   }
   // console.log('Total count', eggsCount, sugarCount)
 }
-console.log(calculateQuantities(['sugar', 'eggs'], 2))
+// console.log(calculateQuantities(['sugar', 'eggs'], 2))
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -82,7 +82,23 @@ console.log(calculateQuantities(['sugar', 'eggs'], 2))
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
-const improveRecipe = 0
+
+function improveRecipe(ingredientObject, portionCount) {
+  const outputObject = {}
+  for (const [key, value] of Object.entries(ingredientObject)) {
+    outputObject[key] = value * portionCount
+  }
+  return outputObject 
+}
+
+const ingredientObject = {
+  eggs: 2,
+  bricks: 50,
+  dettol: 2,
+  bonsaiTree: 3
+}
+console.log(improveRecipe(ingredientObject, -1))
+
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
