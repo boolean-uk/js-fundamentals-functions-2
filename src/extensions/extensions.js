@@ -51,7 +51,24 @@ function estimatePrepTime(ingredientsArray, prepTime) {
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
-const calculateQuantities = null
+function calculateQuantities(ingredientsArray, cakeLayerCount) {
+  let sugarCount = 0
+  let eggsCount = 0
+  if (ingredientsArray.includes('sugar')) {
+    sugarCount = 100 * cakeLayerCount
+    // console.log('Sugar count:', sugarCount)
+  }
+  if (ingredientsArray.includes('eggs')) {
+    eggsCount = 2 * cakeLayerCount
+    // console.log('Egg count:', eggsCount)
+  }
+  return {
+    sugar: sugarCount,
+    eggs: eggsCount
+  }
+  // console.log('Total count', eggsCount, sugarCount)
+}
+console.log(calculateQuantities(['sugar', 'eggs'], 2))
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
