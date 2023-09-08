@@ -12,7 +12,8 @@ console.log(bakingTime())
 // and the result of the bakingTime function
 
 function remainingBakeTime(minutesInOven) {
-  return minutesInOven
+  const remainingtime = bakingTime() - minutesInOven
+  return remainingtime
 }
 console.log(remainingBakeTime(10))
 
