@@ -33,7 +33,7 @@ console.log(calculatePreparationTime(3))
 // - the number of minutes the cake has already been baking in the oven
 // It must return how many minutes in total you have spent making the cake,
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
-// Use your calculatePreparationTime function in the calculation.
+// Use your calculatePreparationTime function in the calculation
 
 function totalTimeSpent(layers, minutesInOven) {
   const totalTime =
