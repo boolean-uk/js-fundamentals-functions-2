@@ -4,7 +4,23 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
+function timerStatus(minutesLeftOnTimer){
+  
+  if(minutesLeftOnTimer === 0 ){
+       const cakeReady = "Phil's cake is ready!"
+       return  cakeReady
+  }
+  else if(minutesLeftOnTimer > 0){
+        const notReady =  "The cake is still baking!"
+    return   notReady
+  }
+  else if(minutesLeftOnTimer !== typeof 'number' ){
+      const timmerNotSet =   "You didn't set a timer!"
+      return timmerNotSet
+  }
 
+}
+console.log(timerStatus(4))
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -14,6 +30,14 @@
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
 
+ /*      function estimatePrepTime(arrayOfIngredients,prepTimePerIngredient){
+       const totalPrepTime = ingredient * prepTimePerIngredient
+       
+        return totalPrepTime
+       }
+       const ingredient = ["sugar", "milk", "flour", "eggs"]
+       console.log(estimatePrepTime(ingredient,2))*/
+       
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
 // - a list of ingredients
@@ -47,6 +71,6 @@
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
   estimatePrepTime /* eslint-disable-line no-undef */,
-  calculateQuantities /* eslint-disable-line no-undef */,
-  improveRecipe /* eslint-disable-line no-undef */
+  //calculateQuantities /* eslint-disable-line no-undef */,
+  //improveRecipe /* eslint-disable-line no-undef */
 }
