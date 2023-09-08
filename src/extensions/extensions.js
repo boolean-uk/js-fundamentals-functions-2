@@ -5,6 +5,13 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
+const timerStatus = (remainingMinutesLeft) =>
+  remainingMinutesLeft === 0
+    ? "Phil's cake is ready!"
+    : !remainingMinutesLeft
+    ? "You didn't set a timer!"
+    : 'The cake is still baking!'
+
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,6 +20,8 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
+const estimatePrepTime = (ingredients, time = 2) => ingredients.length * time
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -28,7 +37,12 @@
 // returns: { sugar: 200, eggs: 4 }
 //
 // calculateQuantities(["milk", "eggs"], 3)
-// returns: { sugar: 0, eggs: 6 }
+// returns: { sugar: 0, eggs: 6
+
+const calculateQuantities = (ingredients, layers) => ({
+  sugar: ingredients.includes('sugar') ? 100 * layers : 0,
+  eggs: ingredients.includes('eggs') ? layers * 2 : 0
+})
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -42,6 +56,16 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+
+const improveRecipe = (ingredients, portions) => {
+  const newIngredients = {}
+
+  for (const key in ingredients) {
+    newIngredients[key] = ingredients[key] * portions
+  }
+
+  return newIngredients
+}
 
 // Don't change the code below this line
 module.exports = {
