@@ -36,7 +36,15 @@ console.log(timerStatus())
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
 
-function estimatePrepTime(ingredients, prepTime) {}
+function estimatePrepTime(ingredients, prepTime) {
+  if (prepTime == null) {
+    prepTime = 2
+  }
+  const numberOfItems = ingredients.length
+  // console.log(numberOfItems)
+  return numberOfItems * prepTime
+}
+console.log(estimatePrepTime(['sugar', 'milk', 'flour', 'eggs'], 4))
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -54,7 +62,21 @@ function estimatePrepTime(ingredients, prepTime) {}
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
 
-function calculateQuantities(list, layers) {}
+function calculateQuantities(list, layers) {
+  let sugarAmount = 0
+  let eggAmount = 0
+
+  if (list.includes('sugar')) {
+    sugarAmount = layers * 100
+  }
+  if (list.includes('eggs')) {
+    eggAmount = layers * 2
+  }
+  const quantities = { eggs: eggAmount, sugar: sugarAmount }
+  return quantities
+}
+
+console.log(calculateQuantities(['sugar', 'milk', 'eggs'], 2))
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -69,7 +91,25 @@ function calculateQuantities(list, layers) {}
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
 
-function improveRecipe(cakeIngrObj, portions) {}
+function improveRecipe(cakeObj, portions) {
+  if ('eggs' in cakeObj === true) {
+    cakeObj.eggs = portions * cakeObj.eggs
+  }
+
+  if ('milk' in cakeObj === true) {
+    cakeObj.milk = portions * cakeObj.milk
+  }
+
+  if ('sugar' in cakeObj === true) {
+    cakeObj.sugar = portions * cakeObj.sugar
+  }
+  if ('flour' in cakeObj === true) {
+    cakeObj.flour = portions * cakeObj.flour
+  }
+  return cakeObj
+}
+
+console.log(improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3))
 
 // Don't change the code below this line
 module.exports = {
