@@ -42,9 +42,9 @@ function totalTimeSpent(NumberOfLayers, minutesInOven) {
 }
 console.log(totalTimeSpent(2, 3))
 // Don't change the code below this line
-// module.exports = {
-//   bakingTime /* eslint-disable-line no-undef */,
-//   remainingBakeTime /* eslint-disable-line no-undef */,
-//   calculatePreparationTime /* eslint-disable-line no-undef */,
-//   totalTimeSpent /* eslint-disable-line no-undef */
-// }
+module.exports = {
+  bakingTime /* eslint-disable-line no-undef */,
+  remainingBakeTime /* eslint-disable-line no-undef */,
+  calculatePreparationTime /* eslint-disable-line no-undef */,
+  totalTimeSpent /* eslint-disable-line no-undef */
+}
