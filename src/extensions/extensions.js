@@ -32,6 +32,7 @@ function timerStatus(remainingMinutes) {
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+
 function estimatePrepTime(ingredients, prepTimePerIngredient) {
   if (prepTimePerIngredient === undefined) {
     prepTimePerIngredient = 2
@@ -54,6 +55,7 @@ function estimatePrepTime(ingredients, prepTimePerIngredient) {
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+
 function calculateQuantities(ingredients, layers) {
   let obj = {}
   if (ingredients.includes(`sugar`)=== true) {
