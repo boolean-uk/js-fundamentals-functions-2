@@ -72,38 +72,35 @@ function calculateQuantities(ingredientsList, numberOfLayers) {
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
-function improveRecipe(ingredients, portionNumber) {
-  const ingredientsListed = Object.keys(ingredients)
-  const quantities = Object.values(ingredients)
-  const newQuantities = []
-  for (let i = 0; i < quantities.length; i++) {
-    newQuantities.push(quantities[i] * portionNumber)
-  }
-  const newAmountsInNestedArray = []
-  const newAmounts = {}
-  for (let i = 0; i < quantities.length; i++) {
-    newAmountsInNestedArray.push([ingredientsListed[i], newQuantities[i]])
-  }
-  newAmountsInNestedArray.forEach((element) =>
-    Object.assign(newAmounts, element)
-  )
 
-  // We've got all the values we want, and they are stored in two seperate arrays. I'm assuming the indexes match (eg. that the quantity stored in array A at index 1 pertains to the ingredient stored in array B). There has to be a way to merge those two arrays into one array of arrays. And then I found a bit of code online which should convert that array of arrays into an object:
-  //   const arrayToObject = (arr = []) => {
-  //     const res = {};
-  //     for(pair of arr){
-  //        const [key, value] = pair;
-  //        res[key] = value;
-  //     };
-  //     return res;
-  //  };
-  // so I'll play around with this to see if it might solve the current issues.
-  return newAmounts
+// The code commented out below was a first attempt - it returned the right values, but stored in arrays within an array, and I could not figure out a way to turn this into an object. But I had a bit of an epiphany will on a bike ride this morning: there had to be a way to iterate through an object. A bit of trial and error later, I found a better solution (see the code below).
+// function improveRecipe(ingredients, portionNumber) {
+//   const ingredientsListed = Object.keys(ingredients)
+//   const quantities = Object.values(ingredients)
+//   const newQuantities = []
+//   for (let i = 0; i < quantities.length; i++) {
+//     newQuantities.push(quantities[i] * portionNumber)
+//   }
+//   const newAmountsInNestedArray = []
+//   const newAmounts = {}
+//   for (let i = 0; i < quantities.length; i++) {
+//     newAmountsInNestedArray.push([ingredientsListed[i], newQuantities[i]])
+//   }
+//   newAmountsInNestedArray.forEach((element) =>
+//     Object.assign(newAmounts, element)
+//   )
+// }
+
+function improveRecipe(ingredients, portionNumber) {
+  let newAmounts
+  for (const i in ingredients) {
+    newAmounts = ingredients[i] * portionNumber
+    ingredients[i] = newAmounts
+  }
+  return ingredients
 }
-const testImproveRecipe = improveRecipe(
-  { eggs: 2, milk: 100, sugar: 250, flour: 160 },
-  7
-)
+
+const testImproveRecipe = improveRecipe({ eggs: 2, milk: 100, flour: 160 }, 3)
 console.log(testImproveRecipe)
 
 // this function needs to reassign the value of each key contained in the original object
