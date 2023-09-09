@@ -5,6 +5,16 @@
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
 
+function timerStatus(minutesLeft) {
+  if (minutesLeft === 0) {
+    return "Phil's cake is ready!"
+  } else if (minutesLeft > 0) {
+    return 'The cake is still baking!'
+  } else {
+    return "You didn't set a timer!"
+  }
+}
+
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,6 +23,12 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+function estimatePrepTime(ingredients, prepTimePerIngredient) {
+  if (!prepTimePerIngredient) {
+    prepTimePerIngredient = 2
+  }
+  return ingredients.length * prepTimePerIngredient
+}
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -29,6 +45,20 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+function calculateQuantities(ingredientsList, numberOfLayers) {
+  const quantitiesOf = {}
+  if (ingredientsList.includes('eggs')) {
+    quantitiesOf.eggs = 2 * numberOfLayers
+  } else {
+    quantitiesOf.eggs = 0
+  }
+  if (ingredientsList.includes('sugar')) {
+    quantitiesOf.sugar = 100 * numberOfLayers
+  } else {
+    quantitiesOf.sugar = 0
+  }
+  return quantitiesOf
+}
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -43,6 +73,37 @@
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
 
+// The code commented out below was a first attempt - it returned the right values, but stored in arrays within an array, and I could not figure out a way to turn this into an object. But I had a bit of an epiphany will on a bike ride this morning: there had to be a way to iterate through an object. A bit of trial and error later, I found a better solution (see the code below).
+// function improveRecipe(ingredients, portionNumber) {
+//   const ingredientsListed = Object.keys(ingredients)
+//   const quantities = Object.values(ingredients)
+//   const newQuantities = []
+//   for (let i = 0; i < quantities.length; i++) {
+//     newQuantities.push(quantities[i] * portionNumber)
+//   }
+//   const newAmountsInNestedArray = []
+//   const newAmounts = {}
+//   for (let i = 0; i < quantities.length; i++) {
+//     newAmountsInNestedArray.push([ingredientsListed[i], newQuantities[i]])
+//   }
+//   newAmountsInNestedArray.forEach((element) =>
+//     Object.assign(newAmounts, element)
+//   )
+// }
+
+function improveRecipe(ingredients, portionNumber) {
+  let newAmounts
+  for (const i in ingredients) {
+    newAmounts = ingredients[i] * portionNumber
+    ingredients[i] = newAmounts
+  }
+  return ingredients
+}
+
+const testImproveRecipe = improveRecipe({ eggs: 2, milk: 100, flour: 160 }, 3)
+console.log(testImproveRecipe)
+
+// this function needs to reassign the value of each key contained in the original object
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
