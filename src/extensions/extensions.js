@@ -4,6 +4,17 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
+function timerStatus(remaining) {
+  if (remaining === 0) {
+    return "Phil's cake is ready!"
+  }
+  if (remaining > 0) {
+    return 'The cake is still baking!'
+  }
+  if (remaining === undefined) {
+    return "You didn't set a timer!"
+  }
+}
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -13,6 +24,13 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+function estimatePrepTime(ingredients, prepTime) {
+  if (prepTime === undefined) {
+    prepTime = 2
+  }
+  const items = ingredients.length
+  return items * prepTime
+}
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -29,6 +47,28 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+function calculateQuantities(list, layers) {
+  const result = {}
+
+  console.log(list)
+  // console.log(list.indexOf("sugar"))
+
+  if (list.indexOf('sugar') === -1) {
+    result.sugar = 0
+  } else {
+    result.sugar = 100 * layers
+  }
+
+  if (list.indexOf('eggs') === -1) {
+    result.eggs = 0
+  } else {
+    //   if (list )
+    result.eggs = 2 * layers
+  }
+  return result
+}
+
+console.log(calculateQuantities(['milk', 'eggs'], 3))
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -42,6 +82,30 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+function improveRecipe(object, portions) {
+  const result = {}
+  // console.log(result)
+
+  const con = Object.keys(object).length
+  // console.log(con)
+
+  const keys = Object.keys(object)
+  // console.log(Object.keys(object))
+
+  const values = Object.values(object)
+  // console.log("test:", values)
+
+  const quantities = portions
+  // console.log(quantities)
+
+  for (let i = 0; i < con; i++) {
+    result[keys[i]] = values[i] * quantities
+  }
+
+  return result
+}
+
+// console.log(improveRecipe({eggs: 2, milk: 300, sugar: 600}, 4))
 
 // Don't change the code below this line
 module.exports = {
