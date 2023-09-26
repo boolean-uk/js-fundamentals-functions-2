@@ -11,7 +11,7 @@ function bakingTime() {
 function remainingBakeTime(minutesInOven) {
   const totalBakingTime = bakingTime()
   if (minutesInOven >= totalBakingTime) {
-    return 0; // Cake is done baking
+    return 0 // Cake is done baking
   } else {
     return totalBakingTime - minutesInOven
   }
