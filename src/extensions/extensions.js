@@ -62,7 +62,6 @@ function calculateQuantities(ingredients, numLayers) {
   // Initialize quantities to 0
   let sugarQuantity = 0
   let eggsQuantity = 0
-
   
   if (ingredients.includes("sugar")) {
     sugarQuantity = numLayers * 100 
@@ -76,7 +75,8 @@ function calculateQuantities(ingredients, numLayers) {
     eggs: eggsQuantity,
   }
 
-  return quantities
+  return quantities}
+
 }
 
 // Example usages:
