@@ -4,7 +4,15 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
-
+function timerStatus(remainingMinutes) {
+  if (remainingMinutes === 0) {
+    return "Phil's cake is ready!"
+  } else if (remainingMinutes) {
+    return 'The cake is still baking!'
+  } else {
+    return "You didn't set a timer!"
+  }
+}
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,7 +21,9 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
-
+function estimatePrepTime(ingredients, prepTimePerIngredient = 2) {
+  return ingredients.length * prepTimePerIngredient
+}
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
 // - a list of ingredients
@@ -29,6 +39,11 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+function calculateQuantities(ingredients, layers) {
+  const sugar = ingredients.includes('sugar') ? 100 * layers : 0
+  const eggs = ingredients.includes('eggs') ? 2 * layers : 0
+  return { sugar, eggs }
+}
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -42,7 +57,13 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
-
+function improveRecipe(recipe, portions) {
+  const newRecipe = {}
+  for (const ingredient in recipe) {
+    newRecipe[ingredient] = recipe[ingredient] * portions
+  }
+  return newRecipe
+}
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
