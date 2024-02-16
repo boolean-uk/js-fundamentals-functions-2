@@ -70,18 +70,64 @@ const requestPOST = {
 // - headers: an object with the headers in the request
 // - body: the body in the request
 // - query: an object with the query parameters in the request
+// function parseRequest(req) {
+//   if (req === undefined) {
+//     return null
+//   }
+//   const [method] = req.split(' /')
+//   const firstSpaceIndex = req.indexOf(' ')
+//   const secondSpaceIndex = req.indexOf(' ', firstSpaceIndex + 1)
+
+//   const request = {
+//     method: method.trim(),
+//     path: req.substring(firstSpaceIndex + 1, secondSpaceIndex),
+//     headers: {},
+//     body: null,
+//     query: null
+//   }
+
+//   // call the other functions below as needed
+
+//   return request
+// }
+
 function parseRequest(req) {
-  const request = {
-    method: '',
-    path: '',
-    headers: {},
-    body: null,
-    query: null
+  if (!req) {
+    return {
+      method: '',
+      path: '',
+      headers: {},
+      body: null,
+      query: null
+    }
   }
 
-  // call the other functions below as needed
+  const lines = req.trim().split('\n')
+  const [method, fullPath] = lines[0].split(' ')
+  const [path, queryString] = fullPath.split('?')
 
-  return request
+  const headers = {}
+  let body = null
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim()
+    if (line === '') {
+      body = lines.slice(i + 1).join('\n')
+      break
+    }
+    const [key, value] = line.split(': ')
+    headers[key] = value
+  }
+
+  const query = queryString ? extractQuery(path + '?' + queryString) : null
+
+  return {
+    method: method.trim(),
+    path: path.trim(),
+    headers,
+    body: parseBody(body),
+    query
+  }
 }
 
 // 2. Create a function named parseHeader that accepts two parameters:
@@ -92,7 +138,16 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  if (!header || !headers) {
+    return
+  }
+
+  const [key, value] = header.split(': ')
+  if (key && value) {
+    headers[key.trim()] = value.trim()
+  }
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +155,38 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  if (!body) {
+    return null
+  }
+
+  try {
+    return JSON.parse(body)
+  } catch (error) {
+    return null
+  }
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  const queryString = path.split('?')[1]
+  if (!queryString) {
+    return null
+  }
+
+  const query = {}
+  const queryParams = queryString.split('&')
+  for (const param of queryParams) {
+    const [key, value] = param.split('=')
+    query[key] = value
+  }
+
+  return query
+}
 
 module.exports = {
   rawGETRequest,

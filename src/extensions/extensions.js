@@ -4,6 +4,15 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
+function timerStatus(minutes) {
+  if (minutes === 0) {
+    return "Phil's cake is ready!"
+  } else if (minutes > 0) {
+    return 'The cake is still baking!'
+  } else {
+    return "You didn't set a timer!"
+  }
+}
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -13,6 +22,14 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+function estimatePrepTime(array, minutes) {
+  const ingredients = array.length
+  if (minutes === undefined) {
+    return ingredients * 2
+  } else {
+    return ingredients * minutes
+  }
+}
 
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
@@ -22,6 +39,30 @@
 // The function should always return an object with two keys: sugar, eggs
 // The values of the keys should be the total amount of sugar and eggs needed for the cake.
 // If sugar or eggs are not present in the list of ingredients, the value for the key should be 0
+function calculateQuantities(ingredients, layers) {
+  let sugarNeeded = 100 * layers
+  let eggsNeeded = 2 * layers
+
+  // Loop through the ingredients
+  for (const ingredient of ingredients) {
+    if (ingredient === 'sugar') {
+      sugarNeeded = 100 * layers
+    } else if (ingredient === 'eggs') {
+      eggsNeeded = 2 * layers
+    }
+  }
+
+  // If eggs are not present, set eggsNeeded to 0
+  if (!ingredients.includes('eggs')) {
+    eggsNeeded = 0
+  }
+  if (!ingredients.includes('sugar')) {
+    sugarNeeded = 0
+  }
+
+  // Return an object with total quantities
+  return { sugar: sugarNeeded, eggs: eggsNeeded }
+}
 //
 // Example:
 // calculateQuantities(["sugar", "milk", "eggs"], 2)
@@ -35,6 +76,18 @@
 // - an object where the keys are ingredients and the values are quantities
 //      e.g. { eggs: 2, milk: 100, sugar: 250, flour: 160 }
 // - the number of portions the cake should provide
+function improveRecipe(recipe, portions) {
+  const newRecipe = {}
+
+  // Loop through the ingredients in the original recipe
+  for (const ingredient in recipe) {
+    // Calculate the new quantity based on the number of portions
+    newRecipe[ingredient] = recipe[ingredient] * portions
+  }
+
+  return newRecipe
+}
+
 //
 // The function should return a new object with the same keys as the recipe provided,
 // but the values should have updated amounts to make sure the cake provides enough portions.
