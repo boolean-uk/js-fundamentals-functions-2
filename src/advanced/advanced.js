@@ -78,8 +78,37 @@ function parseRequest(req) {
     body: null,
     query: null
   }
-
   // call the other functions below as needed
+  let parsedString = req
+  let snip = parsedString.indexOf(' ')
+  request.method = parsedString.substring(1, snip)
+  parsedString = parsedString.slice(snip + 1)
+
+  snip = parsedString.indexOf(' ')
+  const pathAndQuery = parsedString.substring(0, snip)
+  if (pathAndQuery.indexOf('?') !== -1) {
+    request.path = pathAndQuery.substring(0, pathAndQuery.indexOf('?'))
+  } else {
+    request.path = pathAndQuery
+  }
+  request.query = extractQuery(pathAndQuery)
+
+  snip = parsedString.indexOf('\n')
+  parsedString = parsedString.slice(snip + 1)
+
+  snip = parsedString.indexOf('\n')
+  parseHeader(parsedString.substring(0, snip), request.headers)
+
+  while (
+    parsedString.indexOf(':') < parsedString.indexOf('{') ||
+    (parsedString.indexOf(':') !== -1 && parsedString.indexOf('{') === -1)
+  ) {
+    snip = parsedString.indexOf('\n')
+    parseHeader(parsedString.substring(0, snip), request.headers)
+    parsedString = parsedString.slice(snip + 1)
+  }
+
+  request.body = parseBody(parsedString)
 
   return request
 }
@@ -92,7 +121,16 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  if (header.length === 0) {
+    return headers
+  }
+  const split = header.indexOf(' ')
+  const objName = header.substring(0, split - 1)
+  const objString = header.slice(split + 1)
+  headers[objName] = objString
+  return headers
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +138,80 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  if (body.length === 0) {
+    return null
+  }
+  const Obj = {}
+  let bodyValuesExist = true
+  let parsedString = body
+  while (bodyValuesExist) {
+    const snipOne = parsedString.indexOf('"')
+    parsedString = parsedString.slice(snipOne + 1)
+    const snipTwo = parsedString.indexOf('"')
+    const keyName = parsedString.substring(0, snipTwo)
+    parsedString = parsedString.slice(snipTwo + 1)
+
+    const snipThree = parsedString.indexOf('"')
+    parsedString = parsedString.slice(snipThree + 1)
+    const snipFour = parsedString.indexOf('"')
+    const valueName = parsedString.substring(0, snipFour)
+    parsedString = parsedString.slice(snipFour + 1)
+
+    Obj[keyName] = valueName
+
+    if (parsedString.indexOf('"') === -1) {
+      bodyValuesExist = false
+    }
+  }
+  return Obj
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  if (path.indexOf('?') === -1) {
+    return null
+  }
+  const Obj = {}
+  let hasQueriesLeft = true
+  let parsedString = path
+
+  let snipOne = parsedString.indexOf('?')
+  parsedString = parsedString.slice(snipOne + 1)
+  const snipTwo = parsedString.indexOf('=')
+  let keyName = parsedString.substring(0, snipTwo)
+  parsedString = parsedString.slice(snipTwo + 1)
+
+  snipOne = parsedString.indexOf('&')
+  if (snipOne === -1) {
+    Obj[keyName] = parsedString
+    hasQueriesLeft = false
+  } else {
+    const valueName = parsedString.substring(0, snipOne)
+    parsedString = parsedString.slice(snipOne + 1)
+    Obj[keyName] = valueName
+  }
+  while (hasQueriesLeft) {
+    snipOne = parsedString.indexOf('=')
+    keyName = parsedString.substring(0, snipOne)
+    parsedString = parsedString.slice(snipOne + 1)
+
+    snipOne = parsedString.indexOf('&')
+    if (snipOne === -1) {
+      Obj[keyName] = parsedString
+      hasQueriesLeft = false
+    } else {
+      const valueName = parsedString.substring(0, snipOne)
+      parsedString = parsedString.slice(snipOne + 1)
+      Obj[keyName] = valueName
+    }
+  }
+  return Obj
+}
 
 module.exports = {
   rawGETRequest,
