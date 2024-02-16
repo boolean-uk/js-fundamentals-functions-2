@@ -80,6 +80,16 @@ function parseRequest(req) {
   }
 
   // call the other functions below as needed
+  const lines = req.split('\n')
+  const firstLine = lines[0]
+  const [method, path] = firstLine.split(' ')
+  request.method = method
+  request.path = path
+  lines.slice(1, -2).forEach((header) => {
+    parseHeader(header, request.headers)
+  })
+  request.query = extractQuery(path)
+  request.body = parseBody(lines[lines.length - 1])
 
   return request
 }
