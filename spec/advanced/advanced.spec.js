@@ -50,7 +50,7 @@ describe('HTTP Request Parser', () => {
     })
   })
 
-  it('parses a header from a request string', () => {
+  it('parses a header from a request string2', () => {
     const headers = { Host: 'www.example.com' }
     parseHeader('Content-Type: application/json', headers)
     expect(headers).toEqual({
