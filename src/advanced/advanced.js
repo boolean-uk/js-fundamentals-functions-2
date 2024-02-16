@@ -79,8 +79,42 @@ function parseRequest(req) {
     query: null
   }
 
+  if (req === '' || req === null || req === undefined) {
+    return request
+  }
   // call the other functions below as needed
-
+  // Split all lines into array
+  const requestLinesArray = req.trim().split('\n')
+  let bodyReached = false
+  for (let i = 0; i < requestLinesArray.length; i++) {
+    // Method, path, and query are extracted from start of request
+    if (i === 0) {
+      // eslint-disable-next-line no-unused-vars
+      const [requestMethod, requestPath, requestProtocol] = req.split(' ', 3)
+      // eslint-enable-next-line no-unused-vars
+      request.method = requestMethod.substring(1)
+      let pathWithoutQuery = requestPath
+      if (requestPath.includes('?')) {
+        pathWithoutQuery = requestPath.split('?')[0]
+      }
+      request.path = pathWithoutQuery
+      request.query = extractQuery(requestPath)
+      continue // break the current iteration of the for loop
+    }
+    // Find the body by identifying the empty line
+    if (requestLinesArray[i].trim() === '') {
+      // Flip the switch to swap from parsing header content to parsing body content
+      bodyReached = true
+      continue // break the current iteration of the for loop
+    }
+    // When body reached only parse body elements
+    if (bodyReached) {
+      request.body = parseBody(requestLinesArray[i])
+    } else {
+      // If body not reached parse as header element
+      parseHeader(requestLinesArray[i], request.headers)
+    }
+  }
   return request
 }
 
@@ -92,7 +126,13 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  const [key, content] = header.split(':').map((s) => s.trim())
+
+  if (key !== '') {
+    headers[key] = content
+  }
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +140,37 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  if (body.trim() !== '') {
+    return JSON.parse(body)
+  } else {
+    return null
+  }
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  const queryStartIndex = path.indexOf('?')
+  // If no '?' character found -1 is returned
+  if (queryStartIndex === -1) {
+    return null
+  }
+  const query = path.substring(queryStartIndex + 1)
+  const queryObj = {}
+  query.split('&').forEach((q) => {
+    const [key, value] = q.split('=')
+    queryObj[key] = value
+  })
+  return queryObj
+}
+
+// console.log(parseRequest(rawGETRequest))
+console.log(parseRequest(rawGETRequestComplex))
+// console.log(parseRequest(rawPOSTRequest))
 
 module.exports = {
   rawGETRequest,
