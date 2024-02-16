@@ -71,23 +71,25 @@ const requestPOST = {
 // - body: the body in the request
 // - query: an object with the query parameters in the request
 function parseRequest(req) {
+  let path = req.split(' ')[1]
+  if (typeof path === 'undefined') path = ''
   const request = {
-    method: req.split(' ')[0],
-    path: req.split(' ')[1],
+    method: req.split(' ')[0].substring(1),
+    path: path.split('?')[0],
     headers: defineHeaders(req),
-    body: null,
-    query: null
+    body: parseBody(req.substring(req.indexOf('{'), req.indexOf('}'))),
+
+    query: extractQuery(path)
   }
   // call the other functions below as needed
-
   return request
 }
 function defineHeaders(req) {
   const array = req.split(/\r?\n/)
   const obj = {}
-  for (let i = 1; i < array.length; i++) {
-    parseHeader(array[i], obj)
+  for (let i = 2; i < array.length; i++) {
     if (array[i].length === 0) return obj
+    parseHeader(array[i], obj)
   }
   return obj
 }
@@ -102,6 +104,7 @@ function defineHeaders(req) {
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
 function parseHeader(header, headers) {
   const head = header.split(': ')
+  if (typeof head[1] === 'undefined') return headers
   headers[head[0]] = head[1]
   return headers
 }
@@ -115,7 +118,7 @@ function parseHeader(header, headers) {
 function parseBody(body) {
   if (body === '') return null
   const style = body
-    .slice(1, body.length - 2)
+    .slice(1, body.length - 1)
     .replaceAll('"', '')
     .replaceAll(' ', '')
 
