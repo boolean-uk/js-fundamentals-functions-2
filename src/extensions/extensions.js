@@ -24,7 +24,7 @@ const timerStatus = (time) => {
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
 const estimatePrepTime = (ingredients, time) => {
-  const totalTime = time === null ? 2 : time
+  const totalTime = time == null ? 2 : time
   return ingredients.length * totalTime
 }
 
