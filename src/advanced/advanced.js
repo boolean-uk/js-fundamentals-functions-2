@@ -149,7 +149,7 @@ function extractQuery(path) {
   }
   const queries = {}
   // /api/data/123?someValue=example&anotherValue=example2
-  let queryIndex = path.indexOf('?')
+  const queryIndex = path.indexOf('?')
   const queriesPath = path.substring(queryIndex + 1)
   const queriesScope = queriesPath.split('&')
   for (let i = 0; i < queriesScope.length; i++) {
