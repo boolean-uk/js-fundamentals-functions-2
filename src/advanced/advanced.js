@@ -89,6 +89,19 @@ function parseRequest(req) {
   // The first line in array contains method, path, and query params
   const queryAddress = requestLinesArray.shift()
 
+  parseRequestPath(queryAddress, request)
+
+  parseRequestBody(requestLinesArray, request)
+
+  return request
+}
+
+/**
+ * Process and parse elements related to request pathing into the provided request object
+ * @param {string} queryAddress The first line of the query containing request method, address, and any potential parameters
+ * @param {Object} request The request object to be filled into
+ */
+function parseRequestPath(queryAddress, request) {
   // Split the string into three parts
   // eslint-disable-next-line no-unused-vars
   const [requestMethod, requestPath, requestProtocol] = queryAddress.split(
@@ -109,25 +122,31 @@ function parseRequest(req) {
 
   // Set request query
   request.query = extractQuery(requestPath)
+}
 
+/**
+ * Extract and parse the header and body elements from the provided Array of strings
+ * @param {Array<string>} requestBodyArray Array of strings with request headers and body
+ * @param {Object} request The request object to be filled into
+ */
+function parseRequestBody(requestBodyArray, request) {
   // Iterate through to find the headers and potential body elements
   let bodyReached = false
-  for (let i = 0; i < requestLinesArray.length; i++) {
+  for (let i = 0; i < requestBodyArray.length; i++) {
     // Find the body by identifying the empty line
-    if (requestLinesArray[i].trim() === '') {
+    if (requestBodyArray[i].trim() === '') {
       // Flip the switch to swap from parsing header content to parsing body content
       bodyReached = true
       continue // break the current iteration of the for loop
     }
     // When body reached only parse body elements
     if (bodyReached) {
-      request.body = parseBody(requestLinesArray[i])
+      request.body = parseBody(requestBodyArray[i])
     } else {
       // If body not reached parse as header element
-      parseHeader(requestLinesArray[i], request.headers)
+      parseHeader(requestBodyArray[i], request.headers)
     }
   }
-  return request
 }
 
 // 2. Create a function named parseHeader that accepts two parameters:
