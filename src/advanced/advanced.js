@@ -80,6 +80,27 @@ function parseRequest(req) {
   }
 
   // call the other functions below as needed
+  const lines = req.trim().split('\n')
+  let blankLineReached = false
+  for (let i = 0; i < lines.length; i++) {
+    if (i === 0) {
+      const [method, path, protocol] = lines[i].split(' ')
+      if (!method || !path || !protocol) break
+      request.method = method
+      request.path = path.includes('?') ? path.split('?')[0] : path
+      request.query = extractQuery(path)
+      continue
+    }
+    if (lines[i].trim() === '') {
+      blankLineReached = true
+      continue
+    }
+    if (blankLineReached) {
+      request.body = parseBody(lines[i])
+    } else {
+      request.headers = parseHeader(lines[i], request.headers)
+    }
+  }
 
   return request
 }
@@ -92,7 +113,16 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(stringHeader, headers) {
+  if (stringHeader.trim() !== '') {
+    // Split the header into key and value
+    const [key, value] = stringHeader.split(':').map((part) => part.trim())
+
+    // Update the currentHeaders object with the parsed header
+    headers[key] = value
+    return headers
+  }
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +130,31 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  if (body.trim() !== '') {
+    return JSON.parse(body)
+  }
+  return null
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  const queryIndex = path.indexOf('?')
+  if (queryIndex !== -1) {
+    const queryString = path.slice(queryIndex + 1)
+    const query = {}
+    queryString.split('&').forEach((pair) => {
+      const [key, value] = pair.split('=')
+      query[key] = value
+    })
+    return query
+  }
+  return null
+}
 
 module.exports = {
   rawGETRequest,
