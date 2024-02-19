@@ -4,6 +4,15 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
+function timerStatus(remainingTime) {
+  if (remainingTime === null || remainingTime === undefined) {
+    return "You didn't set a timer!"
+  } else if (remainingTime === 0) {
+    return "Phil's cake is ready!"
+  } else {
+    return 'The cake is still baking!'
+  }
+}
 
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
@@ -13,7 +22,9 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
-
+function estimatePrepTime(ingredients, timePerIngredient = 2) {
+  return ingredients.length * timePerIngredient
+}
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
 // - a list of ingredients
@@ -29,6 +40,20 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+function calculateQuantities(ingredients, cakeLayers) {
+  const returnValue = {
+    sugar: 0,
+    eggs: 0
+  }
+  if (ingredients.includes('sugar')) {
+    returnValue.sugar = cakeLayers * 100
+  }
+
+  if (ingredients.includes('eggs')) {
+    returnValue.eggs = cakeLayers * 2
+  }
+  return returnValue
+}
 
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
@@ -42,6 +67,13 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+function improveRecipe(ingredientObject, portions) {
+  const returnValue = {}
+  for (const key in ingredientObject) {
+    returnValue[key] = ingredientObject[key] * portions
+  }
+  return returnValue
+}
 
 // Don't change the code below this line
 module.exports = {
