@@ -71,17 +71,68 @@ const requestPOST = {
 // - body: the body in the request
 // - query: an object with the query parameters in the request
 function parseRequest(req) {
+  if (req === ' ' || req.length <= 0 || req === undefined) {
+    return {
+      method: '',
+      path: '',
+      headers: {},
+      body: null,
+      query: null
+    }
+  }
+  const requestElements = req.split('\n')
+  for (let i = 0; i < requestElements.length; i++) {
+    requestElements[i].replace(' ', '')
+  }
+  if (requestElements[requestElements.length - 1] === '') {
+    requestElements.pop()
+  }
+  const reqBody = req.split('\n\n')
+  let header
+  if (requestElements !== undefined) {
+    const tempheader = requestElements.splice(1, 1)
+    if (tempheader[0] !== undefined) {
+      header = tempheader[0].split(' ')
+    }
+  }
   const request = {
-    method: '',
-    path: '',
+    method: header[0].length < 6 ? header[0] : '',
+    path: getPath(header[1]),
     headers: {},
-    body: null,
-    query: null
+    body: reqBody[1] !== undefined ? parseBody(reqBody[1]) : null,
+    query: header[1] !== undefined ? extractQuery(header[1]) : null
   }
 
+  for (let i = 1; i < requestElements.length; i++) {
+    if (requestElements[i] === '') {
+      break
+    }
+    request.headers = parseHeader(requestElements[i], request.headers)
+  }
   // call the other functions below as needed
 
   return request
+}
+console.log(
+  'parseRequest - rawPOSTRequest:',
+  parseRequest(rawPOSTRequest),
+  'result headers:',
+  parseRequest(rawPOSTRequest).headers
+)
+console.log('parseRequest - rawGETRequest:', parseRequest(rawGETRequest))
+console.log(
+  'parseRequest - rawGETRequestComplex:',
+  parseRequest(rawGETRequestComplex)
+)
+console.log(parseRequest(' '))
+
+function getPath(fullpath) {
+  if (fullpath.indexOf('?') >= 0) {
+    return fullpath.substring(0, fullpath.indexOf('?'))
+  } else if (fullpath.indexOf('?') < 0) {
+    return fullpath
+  }
+  return ''
 }
 
 // 2. Create a function named parseHeader that accepts two parameters:
@@ -92,22 +143,78 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(headerString, headers) {
+  const arr = headerString.split(':')
 
+  if (arr.length <= 1) {
+    return headers
+  }
+  headers[arr[0]] = arr[1].trim()
+  return headers
+}
+console.log(
+  'parseHeader(Host: www.example.com, {}):',
+  parseHeader('Host: www.example.com', {})
+)
+console.log(
+  'parseHeader(Authorization: Bearer your_access_token, { Host: www.example.com }):',
+  parseHeader('Authorization: Bearer your_access_token', {
+    Host: 'www.example.com'
+  })
+)
+console.log(
+  `'parseHeader('', { Host: 'www.example.com' }):'`,
+  parseHeader('', { Host: 'www.example.com' })
+)
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
 // It must return the parsed body as a JavaScript object
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
-
+function parseBody(body) {
+  try {
+    const bodyObj = JSON.parse(body)
+    return bodyObj
+  } catch {
+    return null
+  }
+}
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(pathString) {
+  const pathSplit = pathString.split('?')
+  let Queries = ''
+  if (pathSplit.length <= 1) {
+    return null
+  }
+  let obj = {}
+  const multipleQueries = pathSplit[1].split('&')
+  multipleQueries.forEach((query) => {
+    // eslint-disable-next-line no-unused-expressions
+    if (Queries !== '') {
+      Queries += ',"' + query.replace('=', '":"') + '"'
+    } else {
+      Queries += '"' + query.replace('=', '":"') + '"'
+    }
+  })
+  obj = JSON.parse('{' + Queries + '}')
+  console.log(Queries)
+  console.log(obj)
+  return obj
+}
+console.log(
+  "extractQuery('/api/data/123?someValue=example')",
+  extractQuery('/api/data/123?someValue=example')
+)
+console.log("extractQuery('/api/data/123')", extractQuery('/api/data/123'))
+console.log(
+  "extractQuery('/api/data/123?someValue=example&anotherVlaue=ecample')",
+  extractQuery('/api/data/123?someValue=example&anotherVlaue=ecample')
+)
 
 module.exports = {
   rawGETRequest,
