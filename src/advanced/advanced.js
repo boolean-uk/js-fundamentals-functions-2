@@ -79,28 +79,40 @@ function parseRequest(req) {
     query: null
   }
 
+  // IF request is empty there just return the un-filled object
   if (req === '' || req === null || req === undefined) {
     return request
   }
   // call the other functions below as needed
   // Split all lines into array
   const requestLinesArray = req.trim().split('\n')
+  // The first line in array contains method, path, and query params
+  const queryAddress = requestLinesArray.shift()
+
+  // Split the string into three parts
+  // eslint-disable-next-line no-unused-vars
+  const [requestMethod, requestPath, requestProtocol] = queryAddress.split(
+    ' ',
+    3
+  )
+  // eslint-enable-next-line no-unused-vars
+  // Set request method
+  request.method = requestMethod
+
+  // Set request path
+  let pathWithoutQuery = requestPath
+  // If params ('?') found, remove them, these will be handled in query
+  if (requestPath.includes('?')) {
+    pathWithoutQuery = requestPath.split('?')[0]
+  }
+  request.path = pathWithoutQuery
+
+  // Set request query
+  request.query = extractQuery(requestPath)
+
+  // Iterate through to find the headers and potential body elements
   let bodyReached = false
   for (let i = 0; i < requestLinesArray.length; i++) {
-    // Method, path, and query are extracted from start of request
-    if (i === 0) {
-      // eslint-disable-next-line no-unused-vars
-      const [requestMethod, requestPath, requestProtocol] = req.split(' ', 3)
-      // eslint-enable-next-line no-unused-vars
-      request.method = requestMethod.substring(1)
-      let pathWithoutQuery = requestPath
-      if (requestPath.includes('?')) {
-        pathWithoutQuery = requestPath.split('?')[0]
-      }
-      request.path = pathWithoutQuery
-      request.query = extractQuery(requestPath)
-      continue // break the current iteration of the for loop
-    }
     // Find the body by identifying the empty line
     if (requestLinesArray[i].trim() === '') {
       // Flip the switch to swap from parsing header content to parsing body content
@@ -167,10 +179,6 @@ function extractQuery(path) {
   })
   return queryObj
 }
-
-// console.log(parseRequest(rawGETRequest))
-console.log(parseRequest(rawGETRequestComplex))
-// console.log(parseRequest(rawPOSTRequest))
 
 module.exports = {
   rawGETRequest,
