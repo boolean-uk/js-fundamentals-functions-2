@@ -79,6 +79,25 @@ function parseRequest(req) {
     query: null
   }
   // call the other functions below as needed
+  if (req === '') {
+    return request
+  }
+  const lines = req.split('\n').filter((i) => i)
+  const methodSplit = lines[0].split(' ')
+  request.method = methodSplit[0]
+  const queryIndex = methodSplit[1].indexOf('?')
+  request.path =
+    queryIndex === -1 ? methodSplit[1] : methodSplit[1].substring(0, queryIndex)
+
+  const reqHeadersRaw = lines.slice(1).filter((i) => !i.includes('{'))
+  for (let i = 0; i < reqHeadersRaw.length; i++) {
+    request.headers = parseHeader(reqHeadersRaw[i], request.headers)
+  }
+
+  const reqBodyRaw = lines.filter((i) => i.includes('{'))
+  request.body = parseBody(reqBodyRaw)
+  request.query = extractQuery(methodSplit[1])
+  // console.log(request)
 
   return request
 }
@@ -109,11 +128,14 @@ function parseHeader(header, headers) {
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
 function parseBody(body) {
-  if (body === '') {
+  try {
+    if (body === '') {
+      return null
+    }
+    return JSON.parse(body)
+  } catch (ex) {
     return null
   }
-  const obj = JSON.parse(body)
-  return obj
 }
 
 // 4. Create a function named extractQuery that accepts one parameter:
@@ -125,12 +147,16 @@ function extractQuery(path) {
   if (!path.includes('?')) {
     return null
   }
-  const queryIndex = path.indexOf('?')
-  path = path.substring(queryIndex + 1)
-  const pathQueries = path.split('=')
-  const key = pathQueries[0]
-  const value = pathQueries[1]
-  return { [key]: value }
+  const queries = {}
+  // /api/data/123?someValue=example&anotherValue=example2
+  let queryIndex = path.indexOf('?')
+  const queriesPath = path.substring(queryIndex + 1)
+  const queriesScope = queriesPath.split('&')
+  for (let i = 0; i < queriesScope.length; i++) {
+    const query = queriesScope[i].split('=')
+    queries[query[0]] = query[1]
+  }
+  return queries
 }
 
 module.exports = {
