@@ -85,29 +85,27 @@ function parseRequest(req) {
   }
   // call the other functions below as needed
   // Split all lines into array
-  const requestLinesArray = req.trim().split('\n')
+  const requestAsStringArray = req.trim().split('\n')
   // The first line in array contains method, path, and query params
-  const queryAddress = requestLinesArray.shift()
+  const requestPathingString = requestAsStringArray.shift()
 
-  parseRequestPath(queryAddress, request)
+  parseRequestPath(requestPathingString, request)
 
-  parseRequestBody(requestLinesArray, request)
+  parseRequestBody(requestAsStringArray, request)
 
   return request
 }
 
 /**
  * Process and parse elements related to request pathing into the provided request object
- * @param {string} queryAddress The first line of the query containing request method, address, and any potential parameters
+ * @param {string} requestPathingString The first line of the query containing request method, address, and any potential parameters
  * @param {Object} request The request object to be filled into
  */
-function parseRequestPath(queryAddress, request) {
+function parseRequestPath(requestPathingString, request) {
   // Split the string into three parts
   // eslint-disable-next-line no-unused-vars
-  const [requestMethod, requestPath, requestProtocol] = queryAddress.split(
-    ' ',
-    3
-  )
+  const [requestMethod, requestPath, requestProtocol] =
+    requestPathingString.split(' ', 3)
   // eslint-enable-next-line no-unused-vars
   // Set request method
   request.method = requestMethod
