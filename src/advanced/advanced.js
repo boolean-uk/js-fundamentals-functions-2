@@ -79,30 +79,38 @@ function parseRequest(req) {
     query: null
   }
 
-  // call the other functions below as needed
   const lines = req.trim().split('\n');
-  const [method, path, _] = lines[0].split(' ');
-  request.method = method;
-  request.path = path;
 
-  // Extracting headers
+  // Extract method and path from the first line
+  const [method, pathWithQuery] = lines[0].split(' ');
+  request.method = method;
+  
+  // Check if pathWithQuery is defined and not empty
+  if (pathWithQuery) {
+    const queryIndex = pathWithQuery.indexOf('?');
+    if (queryIndex !== -1) {
+      request.path = pathWithQuery.slice(0, queryIndex);
+      request.query = extractQuery(pathWithQuery.slice(queryIndex));
+    } else {
+      request.path = pathWithQuery;
+    }
+  }
+
+  // Extract headers
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
     if (line === '') break; // Empty line separates headers from body
     parseHeader(line, request.headers);
   }
 
-  // Extracting query parameters
-  request.query = extractQuery(request.path);
-
-  // Extracting body
+  // Extract body
   const emptyLineIndex = req.indexOf('\n\n');
   if (emptyLineIndex !== -1) {
     const bodyString = req.slice(emptyLineIndex).trim();
     request.body = parseBody(bodyString);
   }
 
-  return request
+  return request;
 }
 
 // 2. Create a function named parseHeader that accepts two parameters:
@@ -128,12 +136,11 @@ function parseHeader(header, headers)
 // eg: parseBody('') => null
 function parseBody(body)
 {
-  if (!body) return null;
-  try {
-    return JSON.parse(body);
-  } catch (error) {
+  if (body === '')
+  {
     return null;
   }
+  return JSON.parse(body);
 }
 
 // 4. Create a function named extractQuery that accepts one parameter:
