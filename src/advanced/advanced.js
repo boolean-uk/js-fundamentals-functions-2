@@ -17,6 +17,9 @@ const request = {
   body: null,
   query: null
 }
+
+
+
 // EXAMPLE 2
 const rawGETRequestComplex = `
 GET /api/data/123?someValue=example HTTP/1.1
