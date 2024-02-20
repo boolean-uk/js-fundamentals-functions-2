@@ -20,19 +20,19 @@
 // Use your calculatePreparationTime function in the calculation.
 
 function bakingTime() {
-  return 50;
+  return 50
 }
 
 function remainingBakeTime(minutes) {
-  return bakingTime() - minutes;
+  return bakingTime() - minutes
 }
 
 function calculatePreparationTime(layers) {
-  return layers * 3;
+  return layers * 3
 }
 
 function totalTimeSpent(layers, minutes) {
-  return calculatePreparationTime(layers) + minutes;
+  return calculatePreparationTime(layers) + minutes
 }
 
 // Don't change the code below this line
