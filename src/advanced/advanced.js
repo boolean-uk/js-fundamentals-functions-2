@@ -19,7 +19,7 @@ const request = {
 }
 // EXAMPLE 2
 const rawGETRequestComplex = `
-GET /api/data/123?someValue=example HTTP/1.1
+GET /api/data/123  HTTP/1.1
 Host: www.example.com
 Authorization: Bearer your_access_token
 `
@@ -79,7 +79,58 @@ function parseRequest(req) {
     query: null
   }
 
-  // call the other functions below as needed
+  if (req === '' || req === undefined) {
+    return request
+  }
+
+  const lines = req.split('\n') // Split in lines
+  const requestLineParts = lines[0].split(' ') // Split the request line into parts
+
+  // // Extract method, path, and HTTP version
+  const method = requestLineParts[0]
+  const fullPath = requestLineParts[1] // This might contain both the path and query
+  // Split the fullPath into path and query (if applicable)
+
+  // const queryIndex = requestLineParts[1].indexOf('?')
+  // if (queryIndex !== -1) {
+  //   const [pathPart, queryPart] = fullPath.split('?')
+  // } else {
+  //   const [pathPart, queryPart] = [fullPath, null]
+  // }
+  const [pathPart, queryPart] = fullPath.includes('?')
+    ? fullPath.split('?')
+    : [fullPath, null]
+
+  // const queryIndex = requestLineParts[1].indexOf('?')
+
+  // const pathPart =
+  //   queryIndex === -1
+  //     ? requestLineParts[1]
+  //     : requestLineParts[1].substring(0, queryIndex)
+
+  // Extract headers from subsequent lines until an empty line is found
+  let i = 1
+  // const headers = {}
+  while (lines[i] !== '\r' && lines[i] !== '') {
+    // const [name, value] = lines[i].split(': ')
+    // headers[name] = value
+    parseHeader(lines[i], request.headers)
+    i++
+  }
+
+  // let body = null
+  if (lines[i] === '\r' && lines[i + 1]) {
+    // '\r' check empty
+    // const bodies = lines[i]
+    request.body = parseBody(lines.slice(i + 1).join('\n'))
+  }
+
+  // Assigning
+  request.method = method
+  request.path = pathPart
+  if (queryPart !== null) {
+    request.query = extractQuery(fullPath)
+  }
 
   return request
 }
@@ -92,7 +143,20 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+// parseHeader(header, request.header)
+// Header = object of "name" : value pair
+function parseHeader(header, headers) {
+  if (header === '') {
+    return headers
+  } else if (Object.keys(headers) === 0) {
+    return headers
+  } else {
+    const [key, value] = header.split(': ')
+    headers[key] = value
+
+    return headers
+  }
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +164,40 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  if (body === '') {
+    return null
+  }
+  // const pair = body.split(',')
+  // const keyValuePairs = body.split(',').map(pair => pair.split(':').map(str => str.trim()));
+  // const key = pair[0].slice(1, -1); // Remove double quotes
+  // Using JSON.parse
+  else {
+    const obj = JSON.parse(body)
+    return obj
+  }
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  if (path === '' || !path.includes('?')) {
+    return null
+  } else {
+    const queriesObj = {}
+    const queryIndex = path.indexOf('?') + 1
+    const queryString = path.slice(queryIndex)
+    // split the queries into an array --> then split it again to [key, value]
+    queryString.split('&').forEach((param) => {
+      const [key, value] = param.split('=')
+      queriesObj[key] = value
+    })
+    return queriesObj
+  }
+}
 
 module.exports = {
   rawGETRequest,
