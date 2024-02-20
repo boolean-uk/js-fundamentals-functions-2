@@ -19,6 +19,22 @@
 // which is the sum of the preparation time and the number of minutes it's been in the oven.
 // Use your calculatePreparationTime function in the calculation.
 
+function bakingTime() {
+  return 50;
+}
+
+function remainingBakeTime(minutes) {
+  return bakingTime() - minutes;
+}
+
+function calculatePreparationTime(layers) {
+  return layers * 3;
+}
+
+function totalTimeSpent(layers, minutes) {
+  return calculatePreparationTime(layers) + minutes;
+}
+
 // Don't change the code below this line
 module.exports = {
   bakingTime /* eslint-disable-line no-undef */,
