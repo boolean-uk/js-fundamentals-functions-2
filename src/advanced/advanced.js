@@ -79,7 +79,32 @@ function parseRequest(req) {
     query: null
   }
 
-  // call the other functions below as needed
+  if (req === '') {
+    return request
+  }
+  let lines = req.trim().split('\n')
+
+  if (lines[lines.length - 2] === ''){
+    request.body = parseBody(lines.pop())
+    lines.pop()
+  }
+
+  request.method  = lines[0].split(' ')[0]
+  request.path = lines[0].split(' ')[1].split('?')[0]
+
+  
+
+  for (let i = 1; i < lines.length; i++) {
+    parseHeader(lines[i], request.headers)
+  }
+
+  request.query = extractQuery(lines[0].split(' ')[1])
+
+
+
+  console.log(request)
+
+
 
   return request
 }
@@ -92,7 +117,12 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  if (header.trim() === '') return
+  const [key, value] = header.split(': ')
+  headers[key] = value
+}
+
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +130,29 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  return body.trim() ? JSON.parse(body) : null
+}
+
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  const queryString = path.split('?')[1]
+
+  if (!queryString) return null
+
+  return queryString.split('&').reduce((acc, query) => {
+    const [key, value] = query.split('=')
+    acc[key] = value
+    return acc
+  }, {});
+}
+
+parseRequest(rawPOSTRequest)
 
 module.exports = {
   rawGETRequest,
