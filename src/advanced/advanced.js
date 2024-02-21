@@ -71,6 +71,7 @@ const requestPOST = {
 // - body: the body in the request
 // - query: an object with the query parameters in the request
 function parseRequest(req) {
+  console.log(req)
   const request = {
     method: '',
     path: '',
@@ -78,11 +79,26 @@ function parseRequest(req) {
     body: null,
     query: null
   }
+  if (req === '') {
+    return request
+  }
+  const lines = req.split('\n')
+  const [methodFromString, pathFromString] = lines[0].split(' ')
+  request.method = methodFromString
+  request.path = pathFromString
+  request.headers.Host = lines[1].split(': ')[1]
+  
 
   // call the other functions below as needed
 
   return request
 }
+console.log(parseRequest(`POST /api/data HTTP/1.1
+Host: www.example.com
+Content-Type: application/json
+Content-Length: 36
+
+{"key1": "value1", "key2": "value2"}`))
 
 // 2. Create a function named parseHeader that accepts two parameters:
 // - a string for one header, and an object of current headers that must be augmented with the parsed header
