@@ -81,6 +81,33 @@ function parseRequest(req) {
 
   // call the other functions below as needed
 
+  if (!req) {
+    return request
+  }
+
+  const requestLines = req.trim().split('\n')
+
+  const firstLine = requestLines[0].split(' ')
+  request.method = firstLine[0]
+  const path = firstLine[1].split('?')
+  request.path = path[0]
+
+  for (let i = 1; i < requestLines.length; i++) {
+    const line = requestLines[i].trim()
+    if (line === '') {
+      break
+    }
+    parseHeader(line, request.headers)
+  }
+
+  request.query = extractQuery(firstLine[1])
+
+  const bodyIndex = req.indexOf('\n\n')
+  if (bodyIndex !== -1) {
+    const bodyString = req.substring(bodyIndex + 2)
+    request.body = parseBody(bodyString)
+  }
+
   return request
 }
 
@@ -92,7 +119,12 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  if (!header) return headers
+  const headerArr = header.split(': ')
+  headers[headerArr[0]] = headerArr[1]
+  return headers
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +132,41 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  if (!body.trim()) return null
+  return JSON.parse(body)
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  if (!path || !path.includes('?')) {
+    return null
+  }
+
+  const pathSplit = path.split('?')
+  const queryString = pathSplit[1]
+  const params = new URLSearchParams(queryString)
+
+  const queryObject = {}
+
+  params.forEach((value, key) => {
+    if (queryObject[key] !== undefined) {
+      if (Array.isArray(queryObject[key])) {
+        queryObject[key].push(value)
+      } else {
+        queryObject[key] = [queryObject[key], value]
+      }
+    } else {
+      queryObject[key] = value
+    }
+  })
+
+  return queryObject
+}
 
 module.exports = {
   rawGETRequest,
