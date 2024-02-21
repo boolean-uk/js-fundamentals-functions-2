@@ -71,11 +71,10 @@ const requestPOST = {
 // - body: the body in the request
 // - query: an object with the query parameters in the request
 function parseRequest(req) {
-  let count = 2;
   const lines = req.split('\n');
   const header = lines[0];
   const host = lines[2];
-
+  
   const request = {
     method: '',
     path: '',
@@ -83,18 +82,26 @@ function parseRequest(req) {
     body: null,
     query: null
   }
-
+  
   // call the other functions below as needed
   request.method = parseMethod(req);
   request.path = parsePath(req);
-
-  do {
-    const host = lines[count];
-    request.headers = parseHeader(host, request.headers);
+  
+  let count = 1;
+  
+  while (count < lines.length && lines[count].trim() !== '') {
+    const headerLine = lines[count];
+    request.headers = parseHeader(headerLine, request.headers);
     count++;
-  } while (lines.length > count && lines[count] !== '')
+  }
 
-  request.body = parseBody(lines[count]);
+  // If there's an empty line after the headers, parse the body
+  if (lines[count].trim() === '') {
+    count++; // Move to the next line after the empty line
+    const bodyLines = lines.slice(count).filter(line => line.trim() !== ''); // Remove empty lines
+    request.body = parseBody(bodyLines.join('\n'));
+  }
+  
   request.query = extractQuery(parsePath(req));
 
   return request
