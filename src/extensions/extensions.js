@@ -6,10 +6,10 @@
 // or "You didn't set a timer!" if no value is provided to the parameter
 
 function timerStatus(remainingBakeTime) {
-  if ( remainingBakeTime === 0) {
+  if (remainingBakeTime === 0) {
     return "Phil's cake is ready!"
-  } else if ( remainingBakeTime > 0) {
-    return "The cake is still baking!"
+  } else if (remainingBakeTime > 0) {
+    return 'The cake is still baking!'
   } else if (remainingBakeTime === null || remainingBakeTime === undefined) {
     return "You didn't set a timer!"
   }
@@ -49,16 +49,16 @@ function estimatePrepTime(ingredients, prepTime) {
 // returns: { sugar: 0, eggs: 6 }
 
 function calculateQuantities(ingredients, layers) {
-  let res = {}
+  const res = {}
   if (!ingredients.includes('eggs')) {
     res.eggs = 0
   } else {
-    res.eggs = 2*layers
+    res.eggs = 2 * layers
   }
   if (!ingredients.includes('sugar')) {
     res.sugar = 0
   } else {
-    res.sugar = 100*layers
+    res.sugar = 100 * layers
   }
   return res
 }
@@ -78,10 +78,9 @@ function calculateQuantities(ingredients, layers) {
 
 function improveRecipe(ingredients, portions) {
   for (const [key, value] of Object.entries(ingredients)) {
-    ingredients[key] = value*portions;
+    ingredients[key] = value * portions
   }
   return ingredients
-
 }
 
 // Don't change the code below this line
