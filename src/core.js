@@ -34,7 +34,6 @@ function calculatePreparationTime(layers){
 function totalTimeSpent(layers, minsInOven){
   return calculatePreparationTime(layers) + minsInOven
 }
-console.log(totalTimeSpent(4, 50))
 
 // Don't change the code below this line
 module.exports = {
