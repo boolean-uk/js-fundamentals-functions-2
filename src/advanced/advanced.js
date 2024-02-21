@@ -78,8 +78,26 @@ function parseRequest(req) {
     body: null,
     query: null
   }
+  
+  if (!req) return request
 
-  // call the other functions below as needed
+  const lines = req.trim().split('\n')
+
+  if (lines[lines.length - 2] === '') {
+    const body = lines.pop()
+    request.body = parseBody(body)
+    lines.pop()
+  }
+
+  const requestLineParts = lines[0].split(' ')
+  request.method = requestLineParts[0]
+  request.path = requestLineParts[1].split('?')[0]
+
+  for (let i = 1; i < lines.length; i++) {
+    parseHeader(lines[i], request.headers)
+  }
+
+  request.query = extractQuery(requestLineParts[1])
 
   return request
 }
@@ -92,7 +110,12 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  if (!header.trim()) return headers
+  
+  const [key, value] = header.split(': ') 
+  headers[key.trim()] = value 
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +123,31 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  return body.trim() ? JSON.parse(body) : null
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  const queryIndex = path.indexOf('?')
+  if (queryIndex === -1) {
+    return null
+  }
+
+  const queryString = path.substring(queryIndex + 1)
+  const queryParams = new URLSearchParams(queryString)
+  const queryObj = {}
+
+  for (const [key, value] of queryParams.entries()) {
+    queryObj[key] = value
+  }
+
+  return queryObj
+}
 
 module.exports = {
   rawGETRequest,
