@@ -1,6 +1,6 @@
 // 1. To help Phil keep track of his baking time, create a function named
 // timerStatus that accepts one parameter:
-// - the remaining minutes left on a timer
+// - the remaining minutes left on a timer.
 
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
