@@ -42,7 +42,7 @@ describe('HTTP Request Parser', () => {
     expect(parseBody('')).toEqual(null)
   })
 
-  it('parses a header from a request string', () => {
+  it('parses a header from a request string1', () => {
     const headers = {}
     parseHeader('Content-Type: application/json', headers)
     expect(headers).toEqual({
