@@ -135,11 +135,6 @@ for (let i = 0; i < finalSplit.length; i+=2){
 }
 return request
 }
-let testData = `GET /api/data/123?someValue=example&anotherValue=example2 HTTP/1.1
-Host: www.example.com
-Authorization: Bearer your_access_token`
-
-console.log(parseRequest(testData))
 
 
 // 2. Create a function named parseHeader that accepts two parameters:
@@ -185,15 +180,26 @@ return null
 // eg: extractQuery('/api/data/123') => null
 function extractQuery(path) {
   if (path.includes('?')){
-    splitPath = path.slice(path.indexOf('?')+1, path.length).split('=')
+    splitPath = path.slice(path.indexOf('?')+1, path.length).split('&')
+   
+    let tempArr = []
+    
+    for (let i = 0; i < splitPath.length; i++){
+      tempArr.push(splitPath[i].split('='))
+    }
+    
+    let finalArr = tempArr.flat()
+
+console.log(tempArr)
     path = {}
-      for (let i = 0; i < splitPath.length; i += 2 ){
-        path[splitPath[i]] = splitPath[i+1]
+      for (let i = 0; i < finalArr.length; i += 2 ){
+        path[finalArr[i]] = finalArr[i+1]
       }
  return path
 }
 return null
 }
+console.log(extractQuery(`/api/data/123?someValue=example&anotherValue=example`))
 
 
 module.exports = {
