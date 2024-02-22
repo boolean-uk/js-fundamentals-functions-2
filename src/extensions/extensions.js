@@ -4,7 +4,20 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
-
+function timerStatus(remainingMins) {
+  let status
+  if (remainingMins === 0) {
+    status = "Phil's cake is ready!"
+  }
+  if (remainingMins > 0) {
+    status = 'The cake is still baking!'
+  }
+  if (remainingMins === null || remainingMins === undefined) {
+    status = "You didn't set a timer!"
+  }
+  return status
+}
+console.log(timerStatus())
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,7 +26,12 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
+function estimatePrepTime(ingredients, mins = 2) {
+  const neededTime = ingredients.length * mins
+  return neededTime
+}
 
+console.log(estimatePrepTime([1, 2, 3, 4]))
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
 // - a list of ingredients
@@ -29,7 +47,23 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
+function calculateQuantities(ingredients, layersNum) {
+  // Converting all array's items to lwercase
+  const ingredientsLowerCase = ingredients.map(function (ingredient) {
+    return ingredient.toLowerCase()
+  })
 
+  const sugar = ingredientsLowerCase.includes('sugar') ? layersNum * 100 : 0
+  const eggs = ingredientsLowerCase.includes('eggs') ? layersNum * 2 : 0
+
+  const quantities = {
+    sugar: sugar,
+    eggs: eggs
+  }
+  return quantities
+}
+
+console.log(calculateQuantities(['sugar', 'eggs'], 2))
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -42,7 +76,16 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
+function improveRecipe(object, portionsNums) {
+  const newObj = {}
 
+  for (const key in object) {
+    newObj[key] = object[key] * portionsNums
+  }
+
+  return newObj
+}
+console.log(improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3))
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
