@@ -70,6 +70,7 @@ const requestPOST = {
 // - headers: an object with the headers in the request
 // - body: the body in the request
 // - query: an object with the query parameters in the request
+
 function parseRequest(req) {
   const request = {
     method: '',
@@ -79,10 +80,47 @@ function parseRequest(req) {
     query: null
   }
 
-  // call the other functions below as needed
+  if (!req || typeof req !== 'string') {
+    return request
+  }
+
+  const toLines = req.trim().split('\n')
+  const toIndividuals = toLines.flatMap((str) => str.split(' '))
+
+  request.method = toIndividuals[0]
+  const pathComponents = toIndividuals[1].split('?')
+  request.path = pathComponents[0]
+
+  if (pathComponents.length > 1) {
+    request.query = {}
+    const queryString = pathComponents[1]
+    const queryParams = new URLSearchParams(queryString)
+    for (const [key, value] of queryParams) {
+      request.query[key] = value
+    }
+  }
+
+  for (let i = 1; i < toLines.length; i++) {
+    const header = toLines[i].trim()
+    if (header !== '') {
+      const [key, value] = header.split(': ')
+      request.headers[key] = value
+    } else {
+      if (i < toLines.length - 1) {
+        request.body = parseBody(toLines.slice(i + 1).join('\n'))
+      }
+      break
+    }
+  }
 
   return request
 }
+
+// WHAT IS THIS INSANE DIFFICULTY SPIKE?????????????????????????????????????????????
+
+console.log(parseRequest(rawPOSTRequest))
+
+console.log(parseRequest(rawGETRequestComplex))
 
 // 2. Create a function named parseHeader that accepts two parameters:
 // - a string for one header, and an object of current headers that must be augmented with the parsed header
