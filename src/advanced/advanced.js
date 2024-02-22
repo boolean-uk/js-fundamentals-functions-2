@@ -86,19 +86,19 @@ function parseRequest(req) {
   const [methodFromString, pathFromString] = lines[0].split(' ')
   request.method = methodFromString
   request.path = pathFromString
-  request.headers.Host = lines[1].split(': ')[1]
-  
 
   // call the other functions below as needed
 
   return request
 }
-console.log(parseRequest(`POST /api/data HTTP/1.1
+console.log(
+  parseRequest(`POST /api/data HTTP/1.1
 Host: www.example.com
 Content-Type: application/json
 Content-Length: 36
 
-{"key1": "value1", "key2": "value2"}`))
+{"key1": "value1", "key2": "value2"}`)
+)
 
 // 2. Create a function named parseHeader that accepts two parameters:
 // - a string for one header, and an object of current headers that must be augmented with the parsed header
@@ -108,7 +108,14 @@ Content-Length: 36
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  if (header === '') {
+    return headers
+  }
+  const [key, value] = header.split(': ')
+  headers[key] = value
+  return headers
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
