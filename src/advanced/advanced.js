@@ -80,6 +80,16 @@ function parseRequest(req) {
   }
 
   // call the other functions below as needed
+  // Split the string into an array of words by whitespace
+  const words = req.split(/\s+/)
+  // Filter out empty strings
+  const filteredWords = words.filter((word) => word.trim() !== '')
+  request.method = filteredWords[0]
+  request.path = filteredWords[1]
+
+  request.headers = parseHeader(req)
+  request.body = parseBody(req)
+  request.query = extractQuery(req)
 
   return request
 }
@@ -92,7 +102,20 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  header = header.trim()
+
+  if (!header || !headers.includes(':')) {
+    return
+  }
+
+  const [key, value] = header.split(':')
+
+  const keyTrimmed = key.trim()
+  const valueTrimmed = value.trim()
+
+  headers[keyTrimmed] = valueTrimmed
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +123,30 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  try {
+    return JSON.parse(body)
+  } catch (error) {
+    return null
+  }
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  const query = {}
+  if (!path.includes('?')) {
+    return null
+  }
+  const params = path.split('?')
+
+  const filteredWords = params.filter((params) => params.trim() !== '')
+  query.push(filteredWords)
+  return query
+}
 
 module.exports = {
   rawGETRequest,

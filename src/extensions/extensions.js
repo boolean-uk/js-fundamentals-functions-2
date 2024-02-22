@@ -4,7 +4,15 @@
 // The function must return "Phil's cake is ready!" if the remaining minutes is 0,
 // "The cake is still baking!" if there are any remaining minutes left,
 // or "You didn't set a timer!" if no value is provided to the parameter
-
+function timerStatus(min) {
+  if (min === 0) {
+    return "Phil's cake is ready!"
+  } else if (min > 0) {
+    return 'The cake is still baking!'
+  } else if (min === undefined) {
+    return "You didn't set a timer!"
+  }
+}
 // 2. To help Phil prepare ahead of time, create a function named estimatePrepTime
 // that accepts two parameters:
 // - an array of ingredients (e.g. ["sugar", "milk", "flour", "eggs"])
@@ -13,7 +21,18 @@
 // number of ingredients provided and the prep time per ingredient.
 // If no prep time per ingredient is provided, the function should assume each ingredient
 // takes 2 minutes to prepare
-
+function estimatePrepTime(ingredients, minutes) {
+  let prepTime = 0
+  for (let i = 0; i < ingredients.length; i++) {
+    ingredients[i].min = minutes
+    if (minutes === undefined) {
+      prepTime += 2
+    } else {
+      prepTime += minutes
+    }
+  }
+  return prepTime
+}
 // 3. Phil needs to know the quantity of milk and eggs to use! Create a function
 // named calculateQuantities which accepts two parameters:
 // - a list of ingredients
@@ -29,7 +48,26 @@
 //
 // calculateQuantities(["milk", "eggs"], 3)
 // returns: { sugar: 0, eggs: 6 }
-
+function calculateQuantities(ingredients, layers) {
+  let sugar = 0
+  let eggCount = 0
+  const quantities = {}
+  if (ingredients.includes('eggs') && ingredients.includes('sugar')) {
+    sugar = 100 * layers
+    eggCount = 2 * layers
+    quantities.sugar = sugar
+    quantities.eggs = eggCount
+  } else if (ingredients.includes('sugar')) {
+    sugar = 100 * layers
+    quantities.sugar = sugar
+    quantities.eggs = eggCount
+  } else if (ingredients.includes('eggs')) {
+    eggCount = 2 * layers
+    quantities.eggs = eggCount
+    quantities.sugar = sugar
+  }
+  return quantities
+}
 // 4. Phil's cake is pretty small and only provides 1 portion. He wants to make a bigger one!
 // Create a function named improveRecipe that accepts two parameters:
 // - an object where the keys are ingredients and the values are quantities
@@ -42,7 +80,13 @@
 // Example:
 // improveRecipe({ eggs: 2, milk: 100, sugar: 200 }, 3)
 // returns: { eggs: 6, milk: 300, sugar: 600 }
-
+function improveRecipe(recipe, portions) {
+  const improved = {}
+  for (const key in recipe) {
+    improved[key] = recipe[key] * portions
+  }
+  return improved
+}
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
