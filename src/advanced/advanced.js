@@ -82,7 +82,7 @@ function parseRawMethodAndPath(str) {
 }
 function parseRawRequestIntoArr(request) {
   const req = request.split('\n')
-  //trim arr
+  //trim array empty lines
   if (['\n', '', ' '].includes(req[0])) req.shift()
   if (['\n', '', ' '].includes(req[req.length - 1])) req.pop()
   return req
@@ -99,16 +99,22 @@ function parseRequest(req) {
 
   if (!req) return request
   const rawRequestArr = parseRawRequestIntoArr(req)
+  
+  
   // 0 -> method && path && query
-  const { method, path, query } = parseRawMethodAndPath(rawRequestArr[0])
-  request.method = method
-  request.path = path
-  request.query = query
+  request = {...request,...parseRawMethodAndPath(rawRequestArr[0])}
+  
+  
   // 1 : n -> headers
   // on empty line divider -> body
   let allHeadersParsed = false
   for (let i = 1; i < rawRequestArr.length; i++) {
-    if (rawRequestArr[i]) {
+    
+    if (!rawRequestArr[i]) { 
+      allHeadersParsed = true
+      continue;
+    }
+    
       if (allHeadersParsed) {
         //body
         request.body = parseBody(rawRequestArr[i])
@@ -116,8 +122,6 @@ function parseRequest(req) {
         //header
         parseHeader(rawRequestArr[i], request.headers)
       }
-    } else {
-      allHeadersParsed = true
     }
   }
 
