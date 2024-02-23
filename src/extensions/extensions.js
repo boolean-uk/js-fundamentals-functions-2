@@ -7,7 +7,7 @@
 function timerStatus(remainder) {
   if (remainder === 0) {
     return "Phil's cake is ready!"
-  } else if (remainder !== 0) {
+  } else if (remainder > 0) {
     return 'The cake is still baking!'
   } else {
     return "You didn't set a timer!"
