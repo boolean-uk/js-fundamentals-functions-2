@@ -65,7 +65,6 @@ const requestPOST = {
 
 // 1. Create a function named parseRequest that accepts one parameter:
 // - the raw HTTP request string
-
 // It must return an object with the following properties:
 // - method: the HTTP method used in the request
 // - path: the path in the request
@@ -74,51 +73,45 @@ const requestPOST = {
 // - query: an object with the query parameters in the request
 
 function parseRequest(req) {
-  const request = {
-    method: '',
-    path: '',
-    headers: {},
-    body: null,
-    query: null
+  if (!req || req.trim() === '') {
+    return {
+      method: '',
+      path: '',
+      headers: {},
+      body: null,
+      query: null
+    }
   }
-
-  if (!req || req.trim() === '') return request
 
   const lines = req.trim().split('\n')
+  const [method, fullPath] = lines[0].split(' ')
+  const [path, queryString] = fullPath.split('?')
 
-  const lineOne = lines[0].split(' ')
-  request.method = lineOne[0]
-
-  if (lineOne[1].includes('?')) {
-    const path = lineOne[1].split('?')
-    request.path = path[0]
-  } else {
-    request.path = lineOne[1]
-  }
+  const headers = {}
+  let body = null
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim()
-    if (!line) break
-    parseHeader(line, request.headers)
+    if (line === '') {
+      body = lines.slice(i + 1).join('\n')
+      break
+    }
+    parseHeader(line, headers)
   }
 
-  const emptyLineIndex = lines.findIndex((line) => line.trim() === '')
-  if (emptyLineIndex !== -1 && emptyLineIndex < lines.length - 1) {
-    const body = lines
-      .slice(emptyLineIndex + 1)
-      .join('\n')
-      .trim()
-    request.body = parseBody(body)
+  const query = queryString ? extractQuery(path + '?' + queryString) : null
+
+  return {
+    method: method.trim(),
+    path: path.trim(),
+    headers,
+    body: parseBody(body),
+    query
   }
-
-  request.query = extractQuery(lineOne[1])
-
-  return request
 }
 
 // 2. Create a function named parseHeader that accepts two parameters:
-// - a string for one header,
-// - an object of current headers that must be augmented with the parsed header
+// - a string for one header, and an object of current headers that must be augmented with the parsed header
 // it doesnt return nothing, but updates the header object with the parsed header
 // eg: parseHeader('Host: www.example.com', {})
 //        => { Host: 'www.example.com' }
@@ -153,7 +146,6 @@ function parseBody(body) {
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
 
-// eslint-disable-next-line no-unused-vars
 function extractQuery(path) {
   let obj = null
   if (!(typeof path === 'string')) return obj
@@ -161,7 +153,6 @@ function extractQuery(path) {
   if (path.includes('?')) {
     obj = {}
     const div = path.split('?')
-    request.path = div[0]
     let params
 
     if (path.includes('&')) {
