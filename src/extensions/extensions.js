@@ -86,7 +86,6 @@ function improveRecipe(object, portions) {
 }
 
 
-
 // Don't change the code below this line
 module.exports = {
   timerStatus /* eslint-disable-line no-undef */,
