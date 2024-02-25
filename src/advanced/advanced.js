@@ -78,13 +78,61 @@ function parseRequest(req) {
     body: null,
     query: null
   }
-
-  // call the other functions below as needed
-
-  return request
+  if (req.length === 0){ //Return unpopulated object if passed empty request
+    return request
+  }
+  
+  let splitReq = req.trim().split(' ')
+  //Get method
+  request.method = splitReq[0]
+  //Get path
+  if (splitReq[1].includes('?')){
+    request.path = splitReq[1].slice(0, splitReq[1].indexOf('?'))
+  } else {
+    request.path = splitReq[1]
+  }
+  //Get header
+  let beHeaded = req.slice(req.indexOf('Host'), req.length).split('\n')
+  for (let i = 0; i < beHeaded.length - 1; i++){ 
+    if (beHeaded[i].length === 0){
+      beHeaded.splice(i, beHeaded.length)
+    } else {
+    request.headers[beHeaded[i].slice(beHeaded[i][0], beHeaded[i].indexOf(':'))] = beHeaded[i].slice(beHeaded[i].indexOf(':') +2, beHeaded[i].length)
+    }
+  }
+  //Get body
+  if (req.includes('{')){
+  request.body = {}
+  let bodySlice = req.slice(req.indexOf('{')+1, req.indexOf('}')).replaceAll('"','').split(' ')
+ 
+  for (let i = 0; i < bodySlice.length-1; i+=2){
+    request.body[bodySlice[i].replaceAll(':','')] = bodySlice[i+1].replaceAll(',', '') 
+    }
+  }
+  // Get query 
+  if (splitReq[1].includes('?')){
+  request.query = {}
+  slicedQuery = splitReq[1].slice(splitReq[1].indexOf('?')+1, splitReq[1].length).split('&')
+ 
+  let tempSplit = []
+  for (let i = 0; i < slicedQuery.length; i++){
+    tempSplit.push(slicedQuery[i].split('='))
+  }
+ let finalSplit = tempSplit.flat()
+for (let i = 0; i < finalSplit.length; i+=2){
+  request.query[finalSplit[i]] = finalSplit[i+1]
 }
+}
+return request
+}
+let testData = `GET /api/data/123?someValue=example&anotherValue=example2 HTTP/1.1
+Host: www.example.com
+Authorization: Bearer your_access_token`
 
-// 2. Create a function named parseHeader that accepts two parameters:
+console.log(parseRequest(testData))
+
+
+//
 // - a string for one header, and an object of current headers that must be augmented with the parsed header
 // it doesnt return nothing, but updates the header object with the parsed header
 // eg: parseHeader('Host: www.example.com', {})
@@ -92,7 +140,15 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+
+function parseHeader(header, headers) {
+  if (header.length !== 0){
+   headers[header.split(':')[0]] = header.split(':')[1].trim()
+   }
+ return headers
+ }
+ 
+  
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +156,50 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  
+  if (body.length != 0){
+   let bodySlice = body.slice(body.indexOf('{')+1, body.indexOf('}')).replaceAll('"','').split(' ') 
+   body = {}
+   for (let i = 0; i < bodySlice.length-1; i+=2){
+     body[bodySlice[i].replaceAll(':','')] = bodySlice[i+1].replaceAll(',', '') 
+     }
+     return body
+   } else {
+ return null
+   }
+ }
+
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) { 
+  if (path.includes('?')) {
+    
+    splitPath = path.slice(path.indexOf('?')+1, path.length).split('&')
+
+    let tempArr = []
+
+    for (let i = 0; i < splitPath.length; i++){
+      tempArr.push(splitPath[i].split('='))
+    }
+
+    let finalArr = tempArr.flat()
+
+console.log(tempArr)
+    path = {}
+
+    for (let i = 0; i < finalArr.length; i += 2 ){
+      path[finalArr[i]] = finalArr[i+1]
+    }
+return path
+}
+return null
+}
+console.log(extractQuery(`/api/data/123?someValue=example&anotherValue=example`))
 
 module.exports = {
   rawGETRequest,
@@ -120,4 +212,5 @@ module.exports = {
   parseHeader /* eslint-disable-line no-undef */,
   parseBody /* eslint-disable-line no-undef */,
   extractQuery /* eslint-disable-line no-undef */
+
 }
