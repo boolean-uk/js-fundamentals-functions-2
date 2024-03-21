@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // HERE ARE SOME EXAMPLES OF RAW HTTP REQUESTS (text)
 // WE ARE GOING TO WRITE A COLLECTION OF FUNCTIONS THAT PARSE THE HTTP REQUEST
 // AND CONVERTS IT ALL INTO A Javascript object
@@ -71,12 +72,27 @@ const requestPOST = {
 // - body: the body in the request
 // - query: an object with the query parameters in the request
 function parseRequest(req) {
+  const request_tokens_array = req.trim().split('\n\n')
+  const request_headers = request_tokens_array[0]
+  const request_body = request_tokens_array[1]
+
+  const request_headers_tokens_array = request_headers.trim().split('\n')
+  const first_row_header_tokens_array = request_headers_tokens_array[0]
+    .trim()
+    .split(' ')
+  const headers = {}
+  for (let i = 1; i < request_headers_tokens_array.length; i++) {
+    parseHeader(request_headers_tokens_array[i], headers)
+  }
+
+  const url_extension = (first_row_header_tokens_array[1] || '').split('?')[0]
+
   const request = {
-    method: '',
-    path: '',
-    headers: {},
-    body: null,
-    query: null
+    method: first_row_header_tokens_array[0] || '',
+    path: url_extension || '',
+    headers: headers,
+    body: parseBody(request_body || ''),
+    query: extractQuery(first_row_header_tokens_array[1] || '')
   }
 
   // call the other functions below as needed
@@ -92,7 +108,13 @@ function parseRequest(req) {
 // eg: parseHeader('Authorization: Bearer your_access_token', { Host: 'www.example.com' })
 //        => { Host: 'www.example.com', Authorization: 'Bearer your_access_token'}
 // eg: parseHeader('', { Host: 'www.example.com' }) => { Host: 'www.example.com' }
-function parseHeader(header, headers) {}
+function parseHeader(header, headers) {
+  if (header == null || header === '') return headers
+
+  const tokens = header.trim().split(':')
+  headers[`${tokens[0]}`] = tokens[1].trim()
+  return headers
+}
 
 // 3. Create a function named parseBody that accepts one parameter:
 // - a string for the body
@@ -100,14 +122,29 @@ function parseHeader(header, headers) {}
 // search for JSON parsing
 // eg: parseBody('{"key1": "value1", "key2": "value2"}') => { key1: 'value1', key2: 'value2' }
 // eg: parseBody('') => null
-function parseBody(body) {}
+function parseBody(body) {
+  if (body === '' || body === undefined) return null
+  return JSON.parse(body)
+}
 
 // 4. Create a function named extractQuery that accepts one parameter:
 // - a string for the full path
 // It must return the parsed query as a JavaScript object or null if no query ? is present
 // eg: extractQuery('/api/data/123?someValue=example') => { someValue: 'example' }
 // eg: extractQuery('/api/data/123') => null
-function extractQuery(path) {}
+function extractQuery(path) {
+  const indexOfQuestionMark = path.indexOf('?')
+  if (indexOfQuestionMark === -1) return null
+
+  const result = {}
+  const queryString = path.substring(indexOfQuestionMark + 1)
+  const queryArray = queryString.trim().split('&')
+  for (let i = 0; i < queryArray.length; i++) {
+    const keyValuePair = queryArray[i].trim().split('=')
+    result[keyValuePair[0]] = keyValuePair[1]
+  }
+  return result
+}
 
 module.exports = {
   rawGETRequest,
